@@ -1,5 +1,7 @@
 <?php
 
+namespace coloco;
+
 class Router{
     private static $getRoutes; 
     private static $postRoutes; 

@@ -17,7 +17,7 @@ class Database {
                 
                 $con = new \PDO("mysql:host=$this->host;port=$this->port;dbname=$this->dbname", $this->username, $this->password);
                 $con->setAttribute(\PDO::ERRMODE_EXCEPTION, \PDO::ATTR_ERRMODE);
-                echo 'success';
+                // echo 'success';
                 return $con;
             }catch(PDOException $e){
                 echo $e->getMessage();
