@@ -8,9 +8,9 @@ use coloco\Router;
 $db = new Database();
 $con = $db->connect();
 $router = new Router();
-echo '<pre>';
-var_dump($_SERVER);
-echo '</pre>';
+// echo '<pre>';
+// var_dump($_SERVER);
+// echo '</pre>';
 
 if(str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')){
 $router->get('/api/v1/users', [UserControllers::class, 'getUsers']);
@@ -18,6 +18,14 @@ $router->post('/api/v1/users', [UserControllers::class, 'createUser']);
 $router->get('/api/v1/users/getuser', [UserControllers::class, 'getUser']);
 $router->post('/api/v1/users/updateuser', [UserControllers::class, 'updateUser']);
 $router->post('/api/v1/users/deleteuser', [UserControllers::class, 'deleteUser']);
+$router->call();
+}
+if(str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')){
+$router->get('/api/v1/ads', [UserControllers::class, 'getAds']);
+$router->post('/api/v1/ads', [UserControllers::class, 'createAd']);
+$router->get('/api/v1/ads/getad', [AdControllers::class, 'getAd']);
+$router->post('/api/v1/ads/updatead', [AdControllers::class, 'updateAd']);
+$router->post('/api/v1/ads/deletead', [AdControllers::class, 'deleteAd']);
 $router->call();
 }
 
