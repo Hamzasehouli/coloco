@@ -1,0 +1,15 @@
+{
+    "name": "sehouli/coloco",
+    "autoload": {
+        "psr-4": {
+            "Sehouli\\Coloco\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hamza Sehouli",
+            "email": "sehouli.hamza@gmail.com"
+        }
+    ],
+    "require": {}
+}
