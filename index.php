@@ -15,9 +15,10 @@ $router = new Router();
 // echo '</pre>';
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
+    // $param = explode('=', explode('&', $_SERVER['QUERY_STRING'])[0])[1];
     $router->get('/api/v1/users', [UserControllers::class, 'getUsers']);
     $router->post('/api/v1/users', [UserControllers::class, 'createUser']);
-    $router->get('/api/v1/users/getuser?id=', [UserControllers::class, 'getUser']);
+    $router->get("/api/v1/users/getuser", [UserControllers::class, 'getUser']);
     $router->post('/api/v1/users/updateuser', [UserControllers::class, 'updateUser']);
     $router->post('/api/v1/users/deleteuser', [UserControllers::class, 'deleteUser']);
     $router->call();

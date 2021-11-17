@@ -64,7 +64,9 @@ class UserModel
         $query = 'SELECT * FROM user WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
-        return $stmt;
+        $stmt->execute();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $user;
     }
     // public static function findByIdAndDelete()
     // {
