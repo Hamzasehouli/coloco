@@ -2,32 +2,35 @@
 
 namespace coloco;
 
-class Router{
-    private static $getRoutes; 
-    private static $postRoutes; 
+class Router
+{
+    private $getRoutes;
+    private $postRoutes;
 
-    public function get($url, $fn){
-        $this->getRoutes[$url]=$fn;
+    public function get($url, $fn)
+    {
+        $this->getRoutes[$url] = $fn;
     }
-    public function post($url, $fn){
-        $this->postRoutes[$url]=$fn;
+    public function post($url, $fn)
+    {
+        $this->postRoutes[$url] = $fn;
     }
 
-    public function call(){
+    public function call()
+    {
         $method = $_SERVER['REQUEST_METHOD'];
         $path = $_SERVER['PATH_INFO'] ?? '/';
-        $fn=null;
+        $fn = null;
 
-        if($method === 'GET'){
+        if ($method === 'GET') {
             $fn = $this->getRoutes[$path];
-        }else{
+        } else {
             $fn = $this->postRoutes[$path];
         }
-        if($fn){
+        if ($fn) {
             call_user_func($fn);
-        }else{
-            echo "No route found with:$path"; 
+        } else {
+            echo "No route found with:$path";
         }
     }
 }
-

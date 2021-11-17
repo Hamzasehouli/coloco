@@ -1,4 +1,5 @@
 <?php
+header('content-type:application/json');
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
@@ -16,10 +17,11 @@ $router = new Router();
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
     $router->get('/api/v1/users', [UserControllers::class, 'getUsers']);
     $router->post('/api/v1/users', [UserControllers::class, 'createUser']);
-    $router->get('/api/v1/users/getuser', [UserControllers::class, 'getUser']);
+    $router->get('/api/v1/users/getuser?id=', [UserControllers::class, 'getUser']);
     $router->post('/api/v1/users/updateuser', [UserControllers::class, 'updateUser']);
     $router->post('/api/v1/users/deleteuser', [UserControllers::class, 'deleteUser']);
     $router->call();
+    return;
 }
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
     $router->get('/api/v1/auth/signup', [AuthControllers::class, 'signup']);
@@ -30,6 +32,7 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
     $router->post('/api/v1/auth/updateme', [AuthControllers::class, 'updateMe']);
     $router->post('/api/v1/auth/deleteme', [AuthControllers::class, 'deleteMe']);
     $router->call();
+    return;
 }
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
     $router->get('/api/v1/ads', [UserControllers::class, 'getAds']);
@@ -38,6 +41,7 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
     $router->post('/api/v1/ads/updatead', [AdControllers::class, 'updateAd']);
     $router->post('/api/v1/ads/deletead', [AdControllers::class, 'deleteAd']);
     $router->call();
+    return;
 }
 
 echo 'This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API';

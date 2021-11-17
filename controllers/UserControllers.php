@@ -2,15 +2,22 @@
 
 namespace coloco\controllers;
 
+use coloco\models\Usermodel;
+
 class UserControllers
 {
     public static function getUsers()
     {
-        echo 'get users';
+        $users = Usermodel::find();
+        print_r(json_encode($users));
     }
     public static function createUser()
     {
-        echo 'get users';
+        $body = json_decode(file_get_contents('php://input', true));
+
+        print_r($body);
+        $users = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
+        print_r($users);
     }
     public static function getUser()
     {

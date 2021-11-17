@@ -1,5 +1,7 @@
 <?php
 
+namespace coloco\models;
+
 use coloco\config\Database;
 
 $con = Database::connect();
@@ -15,19 +17,19 @@ class UserModel
     private $password = '';
     private $created_at = '';
 
-    public function find()
+    public static function find()
     {
         global $con;
         $query = 'SELECT * FROM user';
         $stmt = $con->prepare($query);
         $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $results;
     }
-    public function create($username, $firstname, $lastname, $email, $password)
+    public static function create($username, $firstname, $lastname, $email, $password)
     {
         global $con;
-        $query = 'INSERT INTO user() VALUES(:username,:firstname,:lastname,:email,:password)';
+        $query = 'INSERT INTO user(username, firstname, lastname, email, password) VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':username', $username);
         $stmt->bindValue(':firstname', $firstname);
@@ -35,9 +37,13 @@ class UserModel
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $password);
         $stmt->execute();
-        return $stmt;
+        $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
+        $stmt1->bindValue(':email', $email);
+        $stmt1->execute();
+        $results = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+        return $results;
     }
-    public function findOne(...$data)
+    public static function findOne(...$data)
     {
         extract($data);
         global $con;
@@ -52,7 +58,7 @@ class UserModel
         return $stmt;
     }
 
-    public function findById($id)
+    public static function findById($id)
     {
         global $con;
         $query = 'SELECT * FROM user WHERE id=:id';
@@ -60,12 +66,12 @@ class UserModel
         $stmt->bindValue(':id', $id);
         return $stmt;
     }
-    // public function findByIdAndDelete()
+    // public static function findByIdAndDelete()
     // {
     // global $con;
 
     // }
-    // public function findByIdAndUpdate()
+    // public static function findByIdAndUpdate()
     // {
     // global $con;
 
