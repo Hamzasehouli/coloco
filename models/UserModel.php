@@ -1,5 +1,9 @@
 <?php
 
+use coloco\config\Database;
+
+$con = Database::connect();
+
 class UserModel
 {
     private $id = '';
@@ -11,36 +15,44 @@ class UserModel
     private $password = '';
     private $created_at = '';
 
-    public function find($con)
+    public function find()
     {
+        global $con;
         $query = 'SELECT * FROM user';
         $stmt = $con->prepare($query);
-        return $stmt;
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
-    public function create($con)
+    public function create()
     {
+        global $con;
         $query = 'INSERT INTO user() VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
         return $stmt;
     }
-    public function findOne($con)
+    public function findOne()
     {
+        global $con;
         $query = 'SELECT * FROM user WHERE email=:email';
         $stmt = $con->prepare($query);
         return $stmt;
     }
-    public function findById($con)
+    public function findById()
     {
+        global $con;
         $query = 'SELECT * FROM user WHERE id=:id';
         $stmt = $con->prepare($query);
         return $stmt;
     }
-    // public function findByIdAndDelete($con)
+    // public function findByIdAndDelete()
     // {
+    // global $con;
 
     // }
-    // public function findByIdAndUpdate($con)
+    // public function findByIdAndUpdate()
     // {
+    // global $con;
 
     // }
 
