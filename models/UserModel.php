@@ -24,25 +24,40 @@ class UserModel
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }
-    public function create()
+    public function create($username, $firstname, $lastname, $email, $password)
     {
         global $con;
         $query = 'INSERT INTO user() VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
+        $stmt->bindValue(':username', $username);
+        $stmt->bindValue(':firstname', $firstname);
+        $stmt->bindValue(':lastname', $lastname);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':password', $password);
+        $stmt->execute();
         return $stmt;
     }
-    public function findOne()
+    public function findOne(...$data)
     {
+        extract($data);
         global $con;
-        $query = 'SELECT * FROM user WHERE email=:email';
+        $query = 'SELECT * FROM user WHERE' . array_map(function ($d) {
+            return "$d:$d";
+        }, $data);
         $stmt = $con->prepare($query);
+        foreach ($data as $d):
+            $stmt->bindValue(":$d", $d);
+        endforeach;
+        $stmt->execute();
         return $stmt;
     }
-    public function findById()
+
+    public function findById($id)
     {
         global $con;
         $query = 'SELECT * FROM user WHERE id=:id';
         $stmt = $con->prepare($query);
+        $stmt->bindValue(':id', $id);
         return $stmt;
     }
     // public function findByIdAndDelete()
