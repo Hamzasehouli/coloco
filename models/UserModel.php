@@ -8,14 +8,14 @@ $con = Database::connect();
 
 class UserModel
 {
-    private $id = '';
-    private $firstname = '';
-    private $lastname = '';
-    private $username = '';
-    private $email = '';
-    private $role = '';
-    private $password = '';
-    private $created_at = '';
+    // private $id = '';
+    // private $firstname = '';
+    // private $lastname = '';
+    // private $username = '';
+    // private $email = '';
+    // private $role = '';
+    // private $password = '';
+    // private $created_at = '';
 
     public static function find()
     {
@@ -68,15 +68,32 @@ class UserModel
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $user;
     }
-    // public static function findByIdAndDelete()
-    // {
-    // global $con;
+    public static function findByIdAndDelete($id)
+    {
+        global $con;
+        $query = 'DELETE FROM user WHERE id=:id';
+        $stmt = $con->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        echo 'delete successully';
+        return;
 
-    // }
-    // public static function findByIdAndUpdate()
-    // {
-    // global $con;
+    }
+    public static function findByIdAndUpdate($id, ...$data)
+    {
+        global $con;
+        $query = 'UPDATE user set' . array_map(function ($d) {
+            return "$d=:$d,";
+        }, $data) . 'WHERE id=:id';
+        $stmt = $con->prepare($query);
+        foreach ($data as $d):
+            $stmt->bindValue(":$d", $d);
+        endforeach;
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        echo 'delete successully';
+        return;
 
-    // }
+    }
 
 }

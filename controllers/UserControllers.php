@@ -25,10 +25,11 @@ class UserControllers
     }
     public static function updateUser()
     {
-        echo 'get users';
+
     }
     public static function deleteUser()
     {
-        echo 'get users';
+        extract($_GET);
+        UserModel::findByIdAndDelete($id);
     }
 }

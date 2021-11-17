@@ -1,5 +1,8 @@
 <?php
-header('content-type:application/json');
+if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
+
+    header('content-type:application/json');
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
@@ -45,4 +48,18 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
     return;
 }
 
-echo 'This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API';
+if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
+    echo 'This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API';
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <p>index</p>
+</body>
+
+</html>
