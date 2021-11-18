@@ -6,11 +6,15 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require_once('./env.php');
 
 use coloco\config\Database;
 use coloco\controllers\UserControllers;
 use coloco\controllers\AuthControllers;
 use coloco\Router;
+
+
+
 
 $db = new Database();
 $con = $db->connect();
