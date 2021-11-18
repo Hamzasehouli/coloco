@@ -29,6 +29,37 @@ class UserModel
     public static function create($username, $firstname, $lastname, $email, $password)
     {
         global $con;
+        
+        if(empty(str_replace(' ','',$firstname))){
+            header("HTTP/1.1 403");
+            print_r(json_encode('Please enter your firstname'));
+            return;
+        }
+
+        if(empty(str_replace(' ','',$lastname))){
+            header("HTTP/1.1 403");
+            print_r(json_encode('Please enter a lastname'));
+            return;
+        }
+
+        if(empty(str_replace(' ','',$username)) || strlen(str_replace(' ','',$username))<3){
+            header("HTTP/1.1 403");
+            print_r(json_encode('Please enter a username'));
+            return;
+        }
+
+        if(empty(str_replace(' ','',$email)) || !str_contains(str_replace(' ','',$email), '@') || !str_contains(explode('@',str_replace(' ','',$email))[1],'.')){
+            header("HTTP/1.1 403");
+            print_r(json_encode('Please enter a valid email'));
+            return;
+        }
+
+        if(empty(str_replace(' ','',$password)) || strlen(str_replace(' ','',$password))<8){
+            header("HTTP/1.1 403");
+            print_r(json_encode('Please enter a valid password, password must have at least 8 chars'));
+            return;
+        }
+
         $query = 'INSERT INTO user(username, firstname, lastname, email, password) VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
         $hashedPssword = password_hash($password, PASSWORD_DEFAULT);

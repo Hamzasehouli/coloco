@@ -15,6 +15,7 @@ class UserControllers
     {
         $body = json_decode(file_get_contents('php://input', true));
         $users = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
+        if(!isset($users))return ;
         print_r(json_encode($users));
     }
     public static function getUser()
