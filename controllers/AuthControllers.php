@@ -3,6 +3,7 @@
 namespace coloco\controllers;
 
 use coloco\models\Usermodel;
+use coloco\helpers\GenerateJwt;
 
 class AuthControllers
 {
@@ -18,8 +19,12 @@ class AuthControllers
         $body = json_decode(file_get_contents('php://input', true));
         $user = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
         if(!isset($user))return;
+        extract($user[0]);
+        $gt = new GenerateJwt();
+        $jwt = $gt->generateToken($id);
+        $_SESSION['token'] = $jwt;
         http_response_code(201);
-        print_r(json_encode(['status'=>'success', 'data'=>$user]));
+        print_r(json_encode(['status'=>'success', 'data'=>['user' =>$user, 'token'=>$jwt]]));
     
     }
     public static function isLoggedin()
