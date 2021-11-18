@@ -31,11 +31,12 @@ class UserModel
         global $con;
         $query = 'INSERT INTO user(username, firstname, lastname, email, password) VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
+        $hashedPssword = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bindValue(':username', $username);
         $stmt->bindValue(':firstname', $firstname);
         $stmt->bindValue(':lastname', $lastname);
         $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $password);
+        $stmt->bindValue(':password', $hashedPssword);
         $stmt->execute();
         $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
         $stmt1->bindValue(':email', $email);
@@ -75,23 +76,27 @@ class UserModel
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        echo 'delete successully';
+        echo 'deleted successully';
         return;
 
     }
-    public static function findByIdAndUpdate($id, ...$data)
-    {
+    public static function findByIdAndUpdate($id, $data)
+    {   
+        
+        $keys = array_keys($data);
         global $con;
-        $query = 'UPDATE user set' . array_map(function ($d) {
-            return "$d=:$d,";
-        }, $data) . 'WHERE id=:id';
+        $str = implode(',',array_map(function ($d) {
+            return "$d=:$d";
+        }, $keys));
+        $query = 'UPDATE user SET ' . $str . ' WHERE id=:id';
+        print_r($query);
         $stmt = $con->prepare($query);
-        foreach ($data as $d):
-            $stmt->bindValue(":$d", $d);
+        foreach ($data as $d =>$v):
+            $stmt->bindValue(":$d", $v);
         endforeach;
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        echo 'delete successully';
+        echo 'updated successully';
         return;
 
     }
