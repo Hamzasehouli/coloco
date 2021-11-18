@@ -19,10 +19,17 @@ class UserModel
 
     public static function find()
     {
+        
         global $con;
         $query = 'SELECT * FROM user';
         $stmt = $con->prepare($query);
         $stmt->execute();
+        $row = $stmt->rowCount();
+        if($row<1){
+            http_response_code(404);
+            print_r(json_encode(['status'=>'fail', 'message'=>'No users found']));
+            return ;
+        }
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $results;
     }
@@ -69,12 +76,17 @@ class UserModel
         $stmt->bindValue(':lastname', $lastname);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $hashedPssword);
-        $stmt->execute();
-        $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
-        $stmt1->bindValue(':email', $email);
-        $stmt1->execute();
-        $results = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
-        return $results;
+        if($stmt->execute()){
+            $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
+            $stmt1->bindValue(':email', $email);
+            $stmt1->execute();
+            $user = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+            return $user;
+        }else{
+            http_response_code(500);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Something went wrong']));
+            return;
+        }
     }
     public static function findOne(...$data)
     {
@@ -98,37 +110,66 @@ class UserModel
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        $row = $stmt->rowCount();
+        if($row<1){
+            http_response_code(404);
+            print_r(json_encode(['status'=>'fail', 'message'=>'No user found']));
+            return ;
+        }
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $user;
     }
     public static function findByIdAndDelete($id)
     {
         global $con;
+        $query = 'SELECT * FROM user WHERE id=:id';
+        $stmt1 = $con->prepare($query);
+        $stmt1->bindValue(':id', $id);
+        $stmt1->execute();
+        $row = $stmt1->rowCount();
+        if($row<1){
+            http_response_code(404);
+            print_r(json_encode(['status'=>'fail', 'message'=>'No user found']));
+            return ;
+        }
+        //////////////////7
         $query = 'DELETE FROM user WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        echo 'deleted successully';
+        http_response_code(204);
+        print_r(json_encode(['status'=>'success', 'message'=>'user has been deleted successfully']));
         return;
 
     }
     public static function findByIdAndUpdate($id, $data)
     {   
         
-        $keys = array_keys($data);
         global $con;
+        $query = 'SELECT * FROM user WHERE id=:id';
+        $stmt1 = $con->prepare($query);
+        $stmt1->bindValue(':id', $id);
+        $stmt1->execute();
+        $row = $stmt1->rowCount();
+        if($row<1){
+            http_response_code(404);
+            print_r(json_encode(['status'=>'fail', 'message'=>'No user found']));
+            return ;
+        }
+        ////////////////////////
+        $keys = array_keys($data);
         $str = implode(',',array_map(function ($d) {
             return "$d=:$d";
         }, $keys));
         $query = 'UPDATE user SET ' . $str . ' WHERE id=:id';
-        print_r($query);
         $stmt = $con->prepare($query);
         foreach ($data as $d =>$v):
             $stmt->bindValue(":$d", $v);
         endforeach;
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        echo 'updated successully';
+        http_response_code(200);
+        print_r(json_encode(['status'=>'success', 'message'=>'user has been updated successfully']));
         return;
 
     }
