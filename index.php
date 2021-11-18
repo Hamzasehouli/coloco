@@ -20,7 +20,7 @@ $router = new Router();
 // echo '</pre>';
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
-   
+    AuthControllers::protect();
     // $param = explode('=', explode('&', $_SERVER['QUERY_STRING'])[0])[1];
     $router->get('/api/v1/users', [UserControllers::class, 'getUsers']);
     $router->post('/api/v1/users', [UserControllers::class, 'createUser']);
@@ -35,7 +35,8 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
     $router->post('/api/v1/auth/login', [AuthControllers::class, 'login']);
     $router->post('/api/v1/auth/isloggedin', [AuthControllers::class, 'isLoggedin']);
     $router->post('/api/v1/auth/protect', [AuthControllers::class, 'protect']);
-    $router->post('/api/v1/auth/getme', [AuthControllers::class, 'getMe']);
+    $router->post('/api/v1/auth/logout', [AuthControllers::class, 'logout']);
+    $router->get('/api/v1/auth/getme', [AuthControllers::class, 'getMe']);
     $router->post('/api/v1/auth/updateme', [AuthControllers::class, 'updateMe']);
     $router->post('/api/v1/auth/deleteme', [AuthControllers::class, 'deleteMe']);
     $router->call();
