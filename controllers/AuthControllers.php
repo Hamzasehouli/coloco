@@ -32,17 +32,26 @@ class AuthControllers
        
         if(sizeof($_SESSION) === 0){
             http_response_code(400);
-            print_r(json_encode(['status'=>'fail', 'message'=>'Please login to continue']));
+            print_r(json_encode(['status'=>'fail', 'message'=>'Access denied, Please login to continue']));
         return;
         }
         extract($_SESSION);
         $jwt = $token; 
-        print_r($jwt);
-        // $body = json_decode(file_get_contents('php://input', true));
-        // $user = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
-        // if(!isset($user))return;
-        // http_response_code(201);
-        // print_r(json_encode(['status'=>'success', 'data'=>$user]));
+      
+        $decoded = GenerateJwt::verifyToken($jwt);
+        if (!$decoded['istokenValid']) {
+            http_response_code(400);
+            session_destroy();
+            return print_r(json_encode(['status' => 'fail', 'message' => 'Login session is expired, please login again to contine']));
+        }
+        
+        $user = UserModel::findById($decoded['userId']);
+        if(!isset($user))return ;
+        http_response_code(200);
+        print_r(json_encode(['status'=>'success', 'data'=>$user]));
+
+       
+        ///////////////////////////////////////////////////////
     
     }
     public static function protect()
