@@ -68,10 +68,16 @@ class AuthControllers
         $user = Usermodel::findOne(['email'=>$body['email']]);
         if(!isset($user))return;
         extract($user);
+        $isPasswordCorrect = password_verify($data->password,$password);
+        if(!$isPasswordCorrect){
+            http_response_code(400);
+            print_r(json_encode(['status'=>'fail', 'message'=>'User not found or the password is incorrect']));
+            return ;
+        }
         $gt = new GenerateJwt();
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
-        http_response_code(201);
+        http_response_code(200);
         print_r(json_encode(['status'=>'success', 'data'=>['user'=>$user, 'token'=>$jwt]]));
     
     }
