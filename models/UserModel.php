@@ -31,32 +31,33 @@ class UserModel
         global $con;
         
         if(empty(str_replace(' ','',$firstname))){
-            header("HTTP/1.1 403");
-            print_r(json_encode('Please enter your firstname'));
+            http_response_code(403);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter your firstname']));
             return;
         }
 
         if(empty(str_replace(' ','',$lastname))){
-            header("HTTP/1.1 403");
-            print_r(json_encode('Please enter a lastname'));
+            http_response_code(403);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter your lastname']));
             return;
         }
 
         if(empty(str_replace(' ','',$username)) || strlen(str_replace(' ','',$username))<3){
-            header("HTTP/1.1 403");
-            print_r(json_encode('Please enter a username'));
+            http_response_code(403);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter a valid username']));
             return;
         }
 
         if(empty(str_replace(' ','',$email)) || !str_contains(str_replace(' ','',$email), '@') || !str_contains(explode('@',str_replace(' ','',$email))[1],'.')){
-            header("HTTP/1.1 403");
-            print_r(json_encode('Please enter a valid email'));
+            http_response_code(403);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter a valid email']));
+          
             return;
         }
 
         if(empty(str_replace(' ','',$password)) || strlen(str_replace(' ','',$password))<8){
-            header("HTTP/1.1 403");
-            print_r(json_encode('Please enter a valid password, password must have at least 8 chars'));
+            http_response_code(403);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter a valid password, password must have at least 8 chars']));
             return;
         }
 

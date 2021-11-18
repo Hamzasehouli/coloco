@@ -22,7 +22,8 @@ class UserControllers
     {
         extract($_GET);
         $user = UserModel::findById($id);
-        print_r($user);
+        if(!isset($user))return ;
+        print_r(json_encode($user));
     }
     public static function updateUser()
     {   

@@ -5,12 +5,12 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-use coloco\config\Database;
+// use coloco\config\Database;
 use coloco\controllers\UserControllers;
 use coloco\Router;
 
-$db = new Database();
-$con = $db->connect();
+// $db = new Database();
+// $con = $db->connect();
 $router = new Router();
 // echo '<pre>';
 // var_dump($_SERVER);
@@ -48,7 +48,7 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
 }
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
-    echo 'This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API';
+    print_r(json_encode('This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API'));
 }
 
 ?>
