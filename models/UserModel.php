@@ -88,19 +88,28 @@ class UserModel
             return;
         }
     }
-    public static function findOne(...$data)
+    public static function findOne($data)
     {
         extract($data);
+        $keys = array_keys($data);
         global $con;
-        $query = 'SELECT * FROM user WHERE' . array_map(function ($d) {
-            return "$d:$d";
-        }, $data);
+        $query = 'SELECT * FROM user WHERE ' . implode(',', array_map(function ($k) {
+            return "$k=:$k";
+        }, $keys));
         $stmt = $con->prepare($query);
-        foreach ($data as $d):
-            $stmt->bindValue(":$d", $d);
+        foreach ($data as $k =>$v):
+            $stmt->bindValue(":$k", $v);
         endforeach;
         $stmt->execute();
-        return $stmt;
+        $row = $stmt->rowCount();
+        if($row<1){
+            http_response_code(404);
+            print_r(json_encode(['status'=>'fail', 'message'=>'No user found, or the credentials are incorrect']));
+            return ;
+        }
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $user;
     }
 
     public static function findById($id)

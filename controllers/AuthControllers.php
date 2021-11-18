@@ -25,15 +25,24 @@ class AuthControllers
         $_SESSION['token'] = $jwt;
         http_response_code(201);
         print_r(json_encode(['status'=>'success', 'data'=>['user' =>$user, 'token'=>$jwt]]));
-    
+        
     }
     public static function isLoggedin()
-    {
-        $body = json_decode(file_get_contents('php://input', true));
-        $user = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
-        if(!isset($user))return;
-        http_response_code(201);
-        print_r(json_encode(['status'=>'success', 'data'=>$user]));
+    {   
+       
+        if(sizeof($_SESSION) === 0){
+            http_response_code(400);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please login to continue']));
+        return;
+        }
+        extract($_SESSION);
+        $jwt = $token; 
+        print_r($jwt);
+        // $body = json_decode(file_get_contents('php://input', true));
+        // $user = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
+        // if(!isset($user))return;
+        // http_response_code(201);
+        // print_r(json_encode(['status'=>'success', 'data'=>$user]));
     
     }
     public static function protect()
@@ -47,11 +56,23 @@ class AuthControllers
     }
     public static function login()
     {
-        $body = json_decode(file_get_contents('php://input', true));
-        $user = Usermodel::create($body->username, $body->firstname, $body->lastname, $body->email, $body->password);
+        $data = json_decode(file_get_contents('php://input', true));
+
+        if(!$data->email){
+            http_response_code(400);
+            print_r(json_encode(['status'=>'fail', 'message'=>'Please enter your email to login']));
+            return ;
+        }
+        $body = json_decode(json_encode($data), true);
+       
+        $user = Usermodel::findOne(['email'=>$body['email']]);
         if(!isset($user))return;
+        extract($user);
+        $gt = new GenerateJwt();
+        $jwt = $gt->generateToken($id);
+        $_SESSION['token'] = $jwt;
         http_response_code(201);
-        print_r(json_encode(['status'=>'success', 'data'=>$user]));
+        print_r(json_encode(['status'=>'success', 'data'=>['user'=>$user, 'token'=>$jwt]]));
     
     }
     public static function getMe()
