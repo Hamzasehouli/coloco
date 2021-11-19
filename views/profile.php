@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<?php include_once './head.php';
+<?php include_once 'head.php';
 ?>
 <header>
 
@@ -10,7 +10,7 @@ include_once '_header.php';
 ?>
 </header>
 <main>
-    <h1>profile</h1>
+    <h2>profile</h2>
 </main>
 <footer>
 
