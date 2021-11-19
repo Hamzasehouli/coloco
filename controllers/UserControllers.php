@@ -25,7 +25,10 @@ class UserControllers
     }
     public static function updateUser()
     {
-
+        $body = json_decode(file_get_contents('php://input', true));
+        print_r($body);
+        extract($_GET);
+        UserModel::findByIdAndUpdate($id, $body);
     }
     public static function deleteUser()
     {

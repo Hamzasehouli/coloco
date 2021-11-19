@@ -93,7 +93,6 @@ class UserModel
         $stmt->execute();
         echo 'delete successully';
         return;
-
     }
 
 }
