@@ -10,7 +10,7 @@ include_once '_header.php';
 ?>
 </header>
 <main>
-    <h1>overview</h1>
+    <h1>profile</h1>
 </main>
 <footer>
 

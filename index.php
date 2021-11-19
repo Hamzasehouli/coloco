@@ -12,6 +12,7 @@ use coloco\config\Database;
 use coloco\controllers\AdControllers;
 use coloco\controllers\AuthControllers;
 use coloco\controllers\UserControllers;
+use coloco\controllers\ViewControllers;
 use coloco\Router;
 
 $db = new Database();
@@ -59,12 +60,13 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
     print_r(json_encode('This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API'));
 }
 
-include_once './views/base.php';
-// $router->get('/', [ViewControllers::class, 'overview']);
-// $router->get('/signup', [AdControllers::class, 'signup']);
-// $router->post('/login', [AdControllers::class, 'login']);
-// $router->post('/profile', [AdControllers::class, 'profile']);
-// $router->post('/ads', [AdControllers::class, 'ads']);
-// $router->post('/ad', [AdControllers::class, 'ad']);
-// $router->call();
-// return;
+// include_once './views/base.php';
+
+$router->get('/', [ViewControllers::class, 'overview']);
+$router->get('/signup', [ViewControllers::class, 'signup']);
+$router->get('/login', [ViewControllers::class, 'login']);
+$router->get('/profile', [ViewControllers::class, 'profile']);
+$router->get('/ads', [ViewControllers::class, 'ads']);
+$router->get('/ad', [ViewControllers::class, 'ad']);
+$router->call();
+return;

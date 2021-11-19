@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,21 +7,3 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Coloco</title>
 </head>
-
-<body>
-    <header>
-
-        <?php
-include_once '_header.php';
-?>
-    </header>
-    <main>main</main>
-    <footer>
-
-        <?php
-include_once '_footer.php';
-?>
-    </footer>
-</body>
-
-</html>
