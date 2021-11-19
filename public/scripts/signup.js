@@ -22,4 +22,7 @@ submiSignup.addEventListener("submit", async (e) => {
   });
   const data = await res.json();
   console.log(data);
+  if (res.ok) {
+    window.location.replace("/");
+  }
 });
