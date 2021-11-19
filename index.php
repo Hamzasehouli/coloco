@@ -1,12 +1,16 @@
 <?php
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
-
     header('content-type:application/json');
 }
 
+session_start();
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require_once './env.php';
 
 use coloco\config\Database;
+use coloco\controllers\AdControllers;
+use coloco\controllers\AuthControllers;
 use coloco\controllers\UserControllers;
 use coloco\Router;
 
@@ -18,6 +22,7 @@ $router = new Router();
 // echo '</pre>';
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
+    AuthControllers::protect();
     // $param = explode('=', explode('&', $_SERVER['QUERY_STRING'])[0])[1];
     $router->get('/api/v1/users', [UserControllers::class, 'getUsers']);
     $router->post('/api/v1/users', [UserControllers::class, 'createUser']);
@@ -28,20 +33,22 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
     return;
 }
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
-    $router->get('/api/v1/auth/signup', [AuthControllers::class, 'signup']);
+
+    $router->post('/api/v1/auth/signup', [AuthControllers::class, 'signup']);
     $router->post('/api/v1/auth/login', [AuthControllers::class, 'login']);
-    $router->get('/api/v1/auth/isloggedin', [AuthControllers::class, 'isLoggedin']);
+    $router->post('/api/v1/auth/isloggedin', [AuthControllers::class, 'isLoggedin']);
     $router->post('/api/v1/auth/protect', [AuthControllers::class, 'protect']);
-    $router->post('/api/v1/auth/deactivate', [AuthControllers::class, 'deactivate']);
+    $router->post('/api/v1/auth/logout', [AuthControllers::class, 'logout']);
+    $router->get('/api/v1/auth/getme', [AuthControllers::class, 'getMe']);
     $router->post('/api/v1/auth/updateme', [AuthControllers::class, 'updateMe']);
     $router->post('/api/v1/auth/deleteme', [AuthControllers::class, 'deleteMe']);
     $router->call();
     return;
 }
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
-    $router->get('/api/v1/ads', [UserControllers::class, 'getAds']);
-    $router->post('/api/v1/ads', [UserControllers::class, 'createAd']);
+    $router->get('/api/v1/ads', [AdControllers::class, 'getAds']);
     $router->get('/api/v1/ads/getad', [AdControllers::class, 'getAd']);
+    $router->post('/api/v1/ads', [AdControllers::class, 'createAd']);
     $router->post('/api/v1/ads/updatead', [AdControllers::class, 'updateAd']);
     $router->post('/api/v1/ads/deletead', [AdControllers::class, 'deleteAd']);
     $router->call();
@@ -49,7 +56,7 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
 }
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
-    echo 'This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API';
+    print_r(json_encode('This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API'));
 }
 
 ?>

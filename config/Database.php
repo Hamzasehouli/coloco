@@ -6,18 +6,13 @@ use PDOException;
 
 class Database
 {
-    private static $host = 'localhost';
-    private static $port = 3306;
-    private static $dbname = 'coloco';
-    private static $username = 'root';
-    private static $password = '';
     private static $con;
 
     public static function connect()
     {
         try {
 
-            $con = new \PDO('mysql:host=' . self::$host . ';port=' . self::$port . ';dbname=' . self::$dbname, self::$username, self::$password);
+            $con = new \PDO('mysql:host=' . $_ENV['HOST'] . ';port=' . $_ENV['PORT'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['USERNAME'], $_ENV['PASSWORD']);
             $con->setAttribute(\PDO::ERRMODE_EXCEPTION, \PDO::ATTR_ERRMODE);
             // echo 'success';
             return $con;
