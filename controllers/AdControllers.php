@@ -77,6 +77,7 @@ class AdControllers
     }
     public static function updateAd()
     {
+        AuthControllers::isLoggedin();
         $body = json_decode(json_encode(json_decode(file_get_contents('php://input', true))), true);
         extract($_GET);
         if (!isset($id)) {
@@ -92,7 +93,7 @@ class AdControllers
         AdModel::findByIdAndUpdate($id, $body);
     }
     public static function deleteAd()
-    {
+    {AuthControllers::isLoggedin();
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);

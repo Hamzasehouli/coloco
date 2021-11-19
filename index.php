@@ -59,14 +59,12 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
     print_r(json_encode('This route: (' . $_SERVER['REQUEST_URI'] . ') not found in the API'));
 }
 
-?>
-
-<!DOCTYPE html>
-<html>
-
-<body>
-
-    <p>index</p>
-</body>
-
-</html>
+include_once './views/base.php';
+// $router->get('/', [ViewControllers::class, 'overview']);
+// $router->get('/signup', [AdControllers::class, 'signup']);
+// $router->post('/login', [AdControllers::class, 'login']);
+// $router->post('/profile', [AdControllers::class, 'profile']);
+// $router->post('/ads', [AdControllers::class, 'ads']);
+// $router->post('/ad', [AdControllers::class, 'ad']);
+// $router->call();
+// return;
