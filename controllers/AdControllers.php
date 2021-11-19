@@ -81,12 +81,12 @@ class AdControllers
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the user is missing']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
         if (!isset($body)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No input ahs been entered']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'No input has been entered']));
             return;
         }
         AdModel::findByIdAndUpdate($id, $body);
@@ -96,7 +96,7 @@ class AdControllers
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the user is missing']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
         AdModel::findByIdAndDelete($id);

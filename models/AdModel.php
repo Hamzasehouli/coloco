@@ -255,23 +255,23 @@ class AdModel
     public static function findByIdAndDelete($id)
     {
         global $con;
-        $query = 'SELECT * FROM user WHERE id=:id';
+        $query = 'SELECT * FROM ad WHERE id=:id';
         $stmt1 = $con->prepare($query);
         $stmt1->bindValue(':id', $id);
         $stmt1->execute();
         $row = $stmt1->rowCount();
         if ($row < 1) {
             http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'No ad found']));
             return;
         }
         //////////////////7
-        $query = 'DELETE FROM user WHERE id=:id';
+        $query = 'DELETE FROM ad WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         http_response_code(204);
-        print_r(json_encode(['status' => 'success', 'message' => 'user has been deleted successfully']));
+        print_r(json_encode(['status' => 'success', 'message' => 'ad has been deleted successfully']));
         return;
 
     }
@@ -279,14 +279,14 @@ class AdModel
     {
 
         global $con;
-        $query = 'SELECT * FROM user WHERE id=:id';
+        $query = 'SELECT * FROM ad WHERE id=:id';
         $stmt1 = $con->prepare($query);
         $stmt1->bindValue(':id', $id);
         $stmt1->execute();
         $row = $stmt1->rowCount();
         if ($row < 1) {
             http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'No ad found']));
             return;
         }
         ////////////////////////
@@ -294,7 +294,7 @@ class AdModel
         $str = implode(',', array_map(function ($d) {
             return "$d=:$d";
         }, $keys));
-        $query = 'UPDATE user SET ' . $str . ' WHERE id=:id';
+        $query = 'UPDATE ad SET ' . $str . ' WHERE id=:id';
         $stmt = $con->prepare($query);
         foreach ($data as $d => $v):
             $stmt->bindValue(":$d", $v);
@@ -302,7 +302,7 @@ class AdModel
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
+        print_r(json_encode(['status' => 'success', 'message' => 'ad has been updated successfully']));
         return;
     }
 
