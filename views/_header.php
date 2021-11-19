@@ -31,9 +31,9 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
 
-            <a class="nav-link" href="/login">Login</a>
-            <a class="nav-link" href="/signup">Signup</a>
-            <span>user</span>
+            <a style="margin-right:8px" class=" btn btn-primary" href="/login">Login</a>
+            <a class="btn btn-primary" href="/signup">Signup</a>
+            <!-- <span>user</span> -->
 
         </form>
     </div>
