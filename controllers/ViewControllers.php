@@ -2,6 +2,8 @@
 
 namespace coloco\controllers;
 
+use coloco\controllers\AuthControllers;
+
 class ViewControllers
 {
     public static function overview()
@@ -10,6 +12,14 @@ class ViewControllers
     }
     public static function profile()
     {
+
+        $res = AuthControllers::isLoggedin();
+        print_r($res);
+        if (empty($res['id'])) {
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
+
+            exit;
+        }
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/profile.php';
 
     }

@@ -65,8 +65,8 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
 $router->get('/', [ViewControllers::class, 'overview']);
 $router->get('/signup', [ViewControllers::class, 'signup']);
 $router->get('/login', [ViewControllers::class, 'login']);
-$router->get('/profile', [ViewControllers::class, 'profile']);
 $router->get('/ads', [ViewControllers::class, 'ads']);
 $router->get('/ad', [ViewControllers::class, 'ad']);
+$router->get('/profile', [ViewControllers::class, 'profile']);
 $router->call();
 return;
