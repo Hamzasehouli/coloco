@@ -29,7 +29,6 @@ class AdModel
     public static function create($data)
     {
         extract($data);
-        print_r($data);
         global $con;
 
         if (empty(str_replace(' ', '', $title))) {
@@ -240,18 +239,18 @@ class AdModel
     public static function findById($id)
     {
         global $con;
-        $query = 'SELECT * FROM user WHERE id=:id';
+        $query = 'SELECT * FROM ad WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         $row = $stmt->rowCount();
         if ($row < 1) {
             http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'No ad found with given id']));
             return;
         }
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $user;
+        $ad = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $ad;
     }
     public static function findByIdAndDelete($id)
     {

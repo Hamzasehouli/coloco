@@ -64,16 +64,16 @@ class AdControllers
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the user is missing']));
+            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
-        $user = AdModel::findById($id);
-        if (!isset($user)) {
+        $ad = AdModel::findById($id);
+        if (!isset($ad)) {
             return;
         }
 
         http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'data' => $user]));
+        print_r(json_encode(['status' => 'success', 'data' => $ad]));
     }
     public static function updateAd()
     {
