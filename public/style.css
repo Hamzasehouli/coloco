@@ -1,5 +1,19 @@
+:root {
+  --color-primary-light: #6e2db0;
+  --color-primary: #3b185f;
+  --color-primary-dark: #2a1144;
+
+  --color-secondary-light: #d54693;
+  --color-secondary: #a12568;
+  --color-secondary-dark: #5c153b;
+}
+
 main {
   min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box !important;
 }
 
 .form {
@@ -11,4 +25,60 @@ main {
 
 .form h2 {
   margin-bottom: 2rem;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-light) !important;
+  border-color: var(--color-primary-light) !important;
+}
+.btn-primary:hover {
+  background-color: var(--color-secondary-light) !important;
+  border-color: var(--color-secondary-light) !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--color-primary-light) !important;
+  color: var(--color-primary-light) !important;
+}
+
+.btn-outline-primary:hover {
+  border-color: var(--color-secondary-light) !important;
+  background-color: var(--color-secondary-light) !important;
+  color: white !important;
+}
+
+.figure__hero {
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(0, 0, 0, 0.26),
+      rgba(0, 0, 0, 0.253)
+    ),
+    url("/public/images/hero.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 60vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__hero {
+  min-width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.336);
+  padding: 2rem;
+  border-radius: 3px;
+}
+.form__control {
+  height: 2.5rem;
+}
+.form__control > * {
+  height: 100%;
+}
+.form__control > * {
+  margin-right: 1rem;
 }
