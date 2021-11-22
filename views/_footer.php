@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="bg-dark text-center text-white">
+<footer style="background-color: var(--color-primary) !important;" class="footer bg-dark text-center text-white">
     <!-- Grid container -->
     <div class="container p-4">
         <!-- Section: Form -->
