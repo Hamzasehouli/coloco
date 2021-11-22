@@ -180,7 +180,6 @@ class UserModel
         http_response_code(200);
         print_r(json_encode(['status'=>'success', 'message'=>'user has been updated successfully']));
         return;
-
     }
 
 }

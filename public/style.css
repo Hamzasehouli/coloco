@@ -1,0 +1,14 @@
+main {
+  min-height: 100vh;
+}
+
+.form {
+  width: 40%;
+  margin: 7rem auto;
+  box-shadow: 2px 2px 20px rgba(99, 98, 98, 0.226);
+  padding: 2rem;
+}
+
+.form h2 {
+  margin-bottom: 2rem;
+}

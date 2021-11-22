@@ -11,8 +11,8 @@ class Database
     public static function connect()
     {
         try {
-           
-            $con = new \PDO('mysql:host=' . $_ENV['HOST']. ';port=' . $_ENV['PORT'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['USERNAME'], $_ENV['PASSWORD']);
+
+            $con = new \PDO('mysql:host=' . $_ENV['HOST'] . ';port=' . $_ENV['PORT'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['USERNAME'], $_ENV['PASSWORD']);
             $con->setAttribute(\PDO::ERRMODE_EXCEPTION, \PDO::ATTR_ERRMODE);
             // echo 'success';
             return $con;
