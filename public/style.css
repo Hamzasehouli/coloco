@@ -86,3 +86,163 @@ main {
 .footer {
   background-color: var(--color-primary) !important;
 }
+
+.cities__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-gap: 3rem;
+  margin: 4rem 0;
+}
+
+.cities__item {
+  height: 12rem;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  border-radius: 5px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.315);
+  background-blend-mode: darken;
+  filter: saturate(160%);
+  padding: 1rem;
+}
+.cities__item--tangier {
+  background-image: url("/public/images/tangier.jpg") !important;
+}
+.cities__item--fes {
+  background-image: url("/public/images/fes-2.jpg") !important;
+}
+.cities__item--agadir {
+  background-image: url("/public/images/agadir-2.jpg") !important;
+}
+.cities__item--casablanca {
+  background-image: url("/public/images/casablanca.jpg") !important;
+}
+.cities__item--oujda {
+  background-image: url("/public/images/oujda.jpg") !important;
+}
+.cities__item--rabat {
+  background-image: url("/public/images/rabat.jpg") !important;
+}
+.cities__item--agadir {
+  background-image: url("/public/images/agadir-2.jpg") !important;
+}
+.cities__item--marrakesh {
+  background-image: url("/public/images/marrakesh-1.jpg") !important;
+}
+.cities__item--laayoune {
+  background-image: url("/public/images/laayoune-1.jpg") !important;
+}
+
+.cities__item--title {
+  color: black !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  text-transform: capitalize !important;
+}
+
+a {
+  text-decoration: navajowhite !important;
+  transition: all 0.5s !important;
+}
+
+a:hover {
+  transform: scale(0.94) !important;
+}
+.section {
+  width: 100% !important;
+  padding: 4rem 10rem !important;
+}
+
+.ad {
+  background-color: rgba(235, 235, 235, 0.527);
+}
+.ad figure {
+  position: relative;
+  background-color: var(--color-tertiary-light);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(45rem, 1fr));
+  padding: 4rem;
+  border-radius: 5px;
+}
+
+.illustration {
+  width: 40rem;
+  height: 20rem;
+  top: 0;
+  left: 10rem;
+  position: relative;
+}
+
+.profile {
+  background-color: rgba(255, 255, 255, 0.534);
+  padding: 10rem 4rem;
+  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.profile__list {
+  flex-basis: 30%;
+  list-style: none;
+}
+.profile__items {
+  border-top: 1px solid rgba(105, 104, 104, 0.24);
+}
+.profile__items:last-child {
+  border-bottom: 1px solid rgba(105, 104, 104, 0.24);
+}
+.profile__links {
+  display: block;
+  padding: 2rem;
+  text-decoration: none;
+}
+.profile__container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+.profile__container a,
+.profile__container button {
+  padding: 1rem;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+.profile__container > * {
+  width: 70%;
+  margin-bottom: 10rem;
+}
+.profile__container > * > .form-backend_btn {
+  display: inline-block;
+  width: 20rem;
+  float: right;
+}
+.profile__container > * > * {
+  width: 100%;
+}
+
+.profile__form__box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+.profile__form__box input,
+.profile__form__box select {
+  padding: 1rem;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  border: 1px solid rgba(105, 104, 104, 0.24);
+  margin-top: 0.8rem;
+}
+.profile__form__box input:focus,
+.profile__form__box select:focus {
+  outline: 1px solid rgba(105, 104, 104, 0.24);
+}
+
+.profile--active {
+  font-weight: 700;
+  color: black;
+}

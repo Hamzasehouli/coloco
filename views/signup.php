@@ -3,6 +3,7 @@
 
 <?php include_once 'head.php';
 ?>
+<title>Signup</title>
 
 <body>
 

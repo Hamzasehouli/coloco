@@ -36,7 +36,7 @@ class ViewControllers
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/signup.php';
     }
     public static function login()
-    {
+    {   
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
     }
 }

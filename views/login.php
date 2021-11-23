@@ -3,6 +3,9 @@
 
 <?php include_once 'head.php';
 ?>
+<head>
+    <title>Login</title>
+</head>
 
 <body>
 
