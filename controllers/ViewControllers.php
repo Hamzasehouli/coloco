@@ -14,7 +14,7 @@ class ViewControllers
     {
 
         $res = AuthControllers::isLoggedin();
-        print_r($res);
+        // print_r($res);
         if (empty($res['id'])) {
             include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
 
@@ -36,7 +36,7 @@ class ViewControllers
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/signup.php';
     }
     public static function login()
-    {   
+    {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
     }
 }
