@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\models;
 
 use coloco\config\Database;

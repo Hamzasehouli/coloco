@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\controllers;
 
 use coloco\models\Admodel;
@@ -12,13 +14,16 @@ class AdControllers
         if (!isset($ads)) {
             return;
         }
-
         http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'results' => count($ads), 'data' => $ads]));
+        echo(json_encode(['status' => 'success', 'results' => count($ads), 'data' => $ads]));
     }
+
     public static function createAd()
-    {$user = AuthControllers::isLoggedin();
+    {
+        $user = AuthControllers::isLoggedin();
+
         $body = json_decode(file_get_contents('php://input', true), true);
+
         $data = ['title' => $body['title'],
             'city' => $body['city'],
             'category' => $body['category'],
@@ -56,7 +61,7 @@ class AdControllers
         }
 
         http_response_code(201);
-        print_r(json_encode(['status' => 'success', 'data' => $ad]));
+        echo(json_encode(['status' => 'success', 'data' => $ad]));
 
     }
     public static function getAd()
@@ -67,13 +72,13 @@ class AdControllers
             print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
-        $ad = AdModel::findById($id);
+        $ad = AdModel::findById((string) $id);
         if (!isset($ad)) {
             return;
         }
 
         http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'data' => $ad]));
+        echo(json_encode(['status' => 'success', 'data' => $ad]));
     }
     public static function updateAd()
     {
@@ -82,22 +87,23 @@ class AdControllers
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
+            echo(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
         if (!isset($body)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No input has been entered']));
+            echo(json_encode(['status' => 'fail', 'message' => 'No input has been entered']));
             return;
         }
         AdModel::findByIdAndUpdate($id, $body);
     }
     public static function deleteAd()
-    {AuthControllers::isLoggedin();
+    {
+        AuthControllers::isLoggedin();
         extract($_GET);
         if (!isset($id)) {
             http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
+            echo(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
             return;
         }
         AdModel::findByIdAndDelete($id);

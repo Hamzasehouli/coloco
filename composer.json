@@ -11,5 +11,15 @@
       "email": "sehouli.hamza@gmail.com"
     }
   ],
-  "require": {}
+  "require": {},
+  "scripts": {
+    "start-dev": [
+      "@putenv $_ENV[PHP_ENV]=devlopment",
+        "php -S localhost:3000"
+    ],
+    "start-prod": [
+      "@putenv $_ENV[PHP_ENV]=production",
+        "php -S localhost:3000"
+    ]
+}
 }

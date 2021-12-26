@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\config;
 
 use PDOException;
@@ -12,11 +14,10 @@ class Database
     {
         try {
 
-            $con = new \PDO('mysql:host=' . $_ENV['HOST'] . ';port=' . $_ENV['PORT'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['USERNAME'], $_ENV['PASSWORD']);
+            $con = new \PDO('mysql:host=' . (string)$_ENV['HOST'] . ';port=' . (int)$_ENV['PORT'] . ';dbname=' . (string)$_ENV['DB_NAME'], (string)$_ENV['USERNAME'], (string)$_ENV['PASSWORD']);
             $con->setAttribute(\PDO::ERRMODE_EXCEPTION, \PDO::ATTR_ERRMODE);
-            // echo 'success';
             return $con;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
     }

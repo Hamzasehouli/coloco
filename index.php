@@ -1,7 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
     header('content-type:application/json');
 }
+
+
 
 session_start();
 
