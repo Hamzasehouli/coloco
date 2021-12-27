@@ -41,4 +41,8 @@ class ViewControllers
     {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
     }
+    public static function renderError()
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/views/_error.php';
+    }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
             $router->get('/ads', [ViewControllers::class, 'ads']);
             $router->get('/ad', [ViewControllers::class, 'ad']);
             $router->get('/profile', [ViewControllers::class, 'profile']);
+            $router->get('/error', [ViewControllers::class, 'renderError']);
             $router->call();
         }
     }

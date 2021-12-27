@@ -38,8 +38,13 @@ class Router
         if ($fn) {
             call_user_func($fn);
         } else {
-            http_response_code(404);
-            echo(json_encode(['status'=>'fail', 'message'=> 'This route: ' . $_SERVER['REQUEST_URI'] . ' not found in this API']));
+
+            if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
+               http_response_code(404);
+               echo(json_encode(['status'=>'fail', 'message'=> 'This route: ' . $_SERVER['REQUEST_URI'] . ' not found in this API']));
+           }else{
+            header('Location:/error');
+           }
             exit;
         }
     }

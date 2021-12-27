@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace coloco\controllers;
 
 use coloco\helpers\GenerateJwt;
+use coloco\helpers\ErrorHandler;
 use coloco\models\Usermodel;
 
 class AuthControllers
@@ -29,7 +30,7 @@ class AuthControllers
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
         http_response_code(201);
-        print_r(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
+        echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
     }
 
@@ -89,10 +90,11 @@ class AuthControllers
     {
         $data = json_decode(file_get_contents('php://input', true));
 
-        if (!$data->email) {
-            http_response_code(400);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter your email to login']));
-            return;
+        if (!isset($data->email)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter your email to login');
+            // http_response_code(400);
+            // echo(json_encode(['status' => 'fail', 'message' => 'Please enter your email to login']));
+            // return;
         }
         $body = json_decode(json_encode($data), true);
 
@@ -105,14 +107,14 @@ class AuthControllers
         $isPasswordCorrect = password_verify($data->password, $password);
         if (!$isPasswordCorrect) {
             http_response_code(400);
-            print_r(json_encode(['status' => 'fail', 'message' => 'User not found or the password is incorrect']));
+            echo(json_encode(['status' => 'fail', 'message' => 'User not found or the password is incorrect']));
             return;
         }
         $gt = new GenerateJwt();
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
         http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
+        echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
     }
     public static function getMe()
