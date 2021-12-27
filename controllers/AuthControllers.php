@@ -61,6 +61,11 @@ class AuthControllers
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
         setcookie(name:'token', value:"$jwt", path:'/', httponly:true);
+        mail("selawax240@wiicheat.com","welcome","welcome $firstname to coloco family",array(
+            'From' => 'team@coloco.com',
+            'Reply-To' => 'team@coloco.com',
+            'X-Mailer' => 'PHP/' . phpversion()
+        ));
         http_response_code(201);
         echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
@@ -93,10 +98,12 @@ class AuthControllers
             ErrorHandler::run(statusCode:403, message:'Login session is expired, please login again to contine');
         }
 
-        if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
-            http_response_code(200);
-            print_r(json_encode(['status' => 'success', 'data' => $user]));
-        }
+        // if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
+        //     http_response_code(200);
+        //     print_r(json_encode(['status' => 'success', 'data' => $user]));
+        // }
+
+       
 
         return $user;
 
@@ -110,16 +117,19 @@ class AuthControllers
 
     public static function protect(string ...$roles):void
     {
+        
         $user = self::isLoggedin();
-        if (!$user) {
-            return;
+       
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:400, message:'You are not logged in');
         }
+        
+        $isallowed = in_array(needle :'admin', haystack: $roles, strict: true);
 
-        if ($user['role'] !== 'admin') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Permission denied']));
-            exit;
+        if (!$isallowed) {
+            ErrorHandler::run(statusCode:403, message:'Permission denied, you are not allowed to perform the task');
         }
+        
     }
 
      //LOGIN////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +157,7 @@ class AuthControllers
 
         $body = json_decode(json_encode($data), true);
 
-        $user = Usermodel::findOne(['email' => $email]);
+        $user = Usermodel::findOne(['active'=>1, 'email'=>$email]);
         if (!isset($user)) {
             ErrorHandler::run(statusCode:400, message:'User no longer exists or the credentials are incorrect');
             exit;
@@ -195,22 +205,25 @@ class AuthControllers
     //UPDATEME////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //UPDATEME////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static function updateMe()
-    {$user = self::isLoggedin();
-        if (!$user) {
-            return;
+    {
+        $user = self::isLoggedin();
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:400, message:'You are not logged in');
         }
 
         $body = json_decode(json_encode(json_decode(file_get_contents('php://input', true))), true);
-        // extract($_GET);
-        // if(!isset($id)){
-        //     http_response_code(403);
-        //     print_r(json_encode(['status'=>'fail', 'message'=>'Id of the user is missing']));
-        // return;
-        // }
-        if (!isset($body)) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No input ahs been entered']));
-            return;
+  
+        if (!$body) {
+            ErrorHandler::run(statusCode:400, message:'No input ahs been entered');
+        }
+        if(array_key_exists(key:'password', array:$body)){
+            ErrorHandler::run(statusCode:403, message:'If you want to update password, please use the appropriate path');
+        }
+        if(array_key_exists(key:'active', array:$body)){
+            ErrorHandler::run(statusCode:403, message:'You can not reactivate your account');
+        }
+        if(array_key_exists(key:'role', array:$body)){
+            ErrorHandler::run(statusCode:403, message:'You can not update your role');
         }
         UserModel::findByIdAndUpdate($user['id'], $body);
     }
@@ -222,14 +235,12 @@ class AuthControllers
     {
 
         $user = self::isLoggedin();
-        if (!$user) {
-            return;
+       
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:400, message:'You are not logged in');
         }
 
         UserModel::findByIdAndDelete($user['id']);
-        session_destroy();
-        http_response_code(204);
-        print_r(json_encode(['status' => 'success', 'message' => 'Your account has been deleted successfully']));
     }
 
 
@@ -239,8 +250,7 @@ class AuthControllers
 
     public static function logout()
     {
-        session_destroy();
-        $_SESSION['token'] ='';
+        setcookie(name:'token', value:"", path:'/', httponly:true);
         http_response_code(200);
         print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
     }

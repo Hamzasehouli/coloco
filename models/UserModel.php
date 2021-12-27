@@ -62,11 +62,12 @@ class UserModel
         extract($data);
         $keys = array_keys($data);
         global $con;
-        $query = 'SELECT * FROM user WHERE ' . implode(',', array_map(function ($k) {
+        $query = 'SELECT * FROM user WHERE ' . implode(' AND ', array_map(function ($k) {
             return "$k=:$k";
         }, $keys));
+        
         $stmt = $con->prepare($query);
-        foreach ($data as $k => $v):
+        foreach ($data as $k =>$v):
             $stmt->bindValue(":$k", $v);
         endforeach;
         $stmt->execute();
@@ -83,7 +84,7 @@ class UserModel
     public static function findById($id)
     {
         global $con;
-        $query = 'SELECT * FROM user WHERE id=:id';
+        $query = 'SELECT * FROM user WHERE id=:id AND active=1';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -110,13 +111,15 @@ class UserModel
             exit;
         }
         //////////////////7
-        $query = 'DELETE FROM user WHERE id=:id';
+        // $query = 'DELETE FROM user WHERE id=:id';
+        $query = 'UPDATE user SET active=0 WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        setcookie(name:'token', value:"", path:'/', httponly:true);
         http_response_code(204);
         print_r(json_encode(['status' => 'success', 'message' => 'user has been deleted successfully']));
-        return;
+        exit;
 
     }
     public static function findByIdAndUpdate($id, $data)
@@ -146,7 +149,7 @@ class UserModel
         $stmt->execute();
         http_response_code(200);
         print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
-        return;
+        exit;
     }
 
 }
