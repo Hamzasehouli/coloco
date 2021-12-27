@@ -22,17 +22,26 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $path = $_SERVER['PATH_INFO'] ?? '/';
+        
         $fn = null;
 
         if ($method === 'GET') {
-            $fn = $this->getRoutes[$path];
+            if(isset($this->getRoutes[$path])){
+               
+                $fn = $this->getRoutes[$path];
+            }
         } else {
-            $fn = $this->postRoutes[$path];
+            if(isset($this->postRoutes[$path])){
+                $fn = $this->postRoutes[$path];
+            }
         }
         if ($fn) {
             call_user_func($fn);
         } else {
-            echo "No route found with:$path";
+            http_response_code(404);
+            echo(json_encode(['status'=>'fail', 'message'=> 'This route: ' . $_SERVER['REQUEST_URI'] . ' not found in this API']));
+            exit;
         }
     }
 }
+
