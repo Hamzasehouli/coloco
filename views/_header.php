@@ -1,4 +1,4 @@
-<nav style="background-color:var(--color-primary-dark) !important"
+<nav style="background-color:var(--color-primary-dark) !important; padding:1.5rem"
     class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

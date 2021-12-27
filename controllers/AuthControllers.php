@@ -59,9 +59,11 @@ class AuthControllers
         }
 
         // $_REQUEST['user']= $user;
+        if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
 
-        http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'data' => $user]));
+            http_response_code(200);
+            print_r(json_encode(['status' => 'success', 'data' => $user]));
+        }
 
         return $user;
 
