@@ -60,6 +60,7 @@ class AuthControllers
         $gt = new GenerateJwt();
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
+        setcookie(name:'token', value:"$jwt", path:'/', httponly:true);
         http_response_code(201);
         echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
@@ -71,32 +72,28 @@ class AuthControllers
 
     public static function isLoggedin()
     {
-
-        if (sizeof($_SESSION) === 0) {
-            http_response_code(400);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Access denied, Please login to continue']));
-            exit;
-            return;
+        if (!isset($_COOKIE['token'])|| $_COOKIE['token'] ==='') {
+            ErrorHandler::run(statusCode:403, message:'Access denied, Please login to continue');
         }
-        extract($_SESSION);
+        extract($_COOKIE);
         $jwt = $token;
-
+        
         $decoded = GenerateJwt::verifyToken($jwt);
-        if (!$decoded['istokenValid']) {
-            http_response_code(400);
-            session_destroy();
-            print_r(json_encode(['status' => 'fail', 'message' => 'Login session is expired, please login again to contine']));
-            exit;
+
+        if (!isset($decoded['istokenValid'])||!$decoded['istokenValid']||!isset($decoded['userId'])||!$decoded['userId']) {
+            unset($_COOKIE);
+            ErrorHandler::run(statusCode:403, message:'Login session is expired, please login again to contine');
         }
 
         $user = UserModel::findById($decoded['userId']);
+        
+
         if (!isset($user)) {
-            return;
+            unset($_COOKIE);
+            ErrorHandler::run(statusCode:403, message:'Login session is expired, please login again to contine');
         }
 
-        // $_REQUEST['user']= $user;
         if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
-
             http_response_code(200);
             print_r(json_encode(['status' => 'success', 'data' => $user]));
         }
@@ -111,7 +108,7 @@ class AuthControllers
     //PROTECT////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //PROTECT////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function protect()
+    public static function protect(string ...$roles):void
     {
         $user = self::isLoggedin();
         if (!$user) {
@@ -137,27 +134,36 @@ class AuthControllers
             ErrorHandler::run(statusCode:400, message:'Please fill all the required fields');
         }
 
-        if (!isset($data->email)) {
-            ErrorHandler::run(statusCode:400, message:'Please enter your email to login');
-            exit;
+        extract($data);
+
+        if (!isset($email)||empty(str_replace(' ', '', $email)) || !str_contains(str_replace(' ', '', $email), '@') || !str_contains(explode('@', str_replace(' ', '', $email))[1], '.')) {
+            ErrorHandler::run(statusCode:400, message:'Please enter a valid email');
         }
+
+        if (!isset($password)||empty(str_replace(' ', '', $password)) || strlen(str_replace(' ', '', $password)) < 8) {
+            ErrorHandler::run(statusCode:400, message:'Please enter a valid password, password must have at least 8 chars');
+            
+        }
+
         $body = json_decode(json_encode($data), true);
 
-        $user = Usermodel::findOne(['email' => $body['email']]);
+        $user = Usermodel::findOne(['email' => $email]);
         if (!isset($user)) {
             ErrorHandler::run(statusCode:400, message:'User no longer exists or the credentials are incorrect');
             exit;
         }
 
-        extract($user);
-        $isPasswordCorrect = password_verify($data->password, $password);
+        $isPasswordCorrect = password_verify($password, $user['password']);
         if (!$isPasswordCorrect) {
             ErrorHandler::run(statusCode:400, message:'User no longer exists or the credentials are incorrect');
             exit;
         }
         $gt = new GenerateJwt();
-        $jwt = $gt->generateToken($id);
+        $jwt = $gt->generateToken($user['id']);
         $_SESSION['token'] = $jwt;
+
+        setcookie(name:'token', value:"$jwt", path:'/', httponly:true);
+       
         http_response_code(200);
         echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
@@ -220,7 +226,6 @@ class AuthControllers
             return;
         }
 
-    
         UserModel::findByIdAndDelete($user['id']);
         session_destroy();
         http_response_code(204);
@@ -235,6 +240,7 @@ class AuthControllers
     public static function logout()
     {
         session_destroy();
+        $_SESSION['token'] ='';
         http_response_code(200);
         print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
     }

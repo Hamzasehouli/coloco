@@ -95,6 +95,8 @@ class UserModel
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $user;
     }
+
+    
     public static function findByIdAndDelete($id)
     {
         global $con;
