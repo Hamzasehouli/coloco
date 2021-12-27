@@ -26,10 +26,12 @@ class UserModel
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $results;
     }
-
+    
 
     public static function create($username, $firstname, $lastname, $email, $password)
     {
+        
+        try{
         global $con;
         
         $query = 'INSERT INTO user(username, firstname, lastname, email, password) VALUES(:username,:firstname,:lastname,:email,:password)';
@@ -40,16 +42,20 @@ class UserModel
         $stmt->bindValue(':lastname', $lastname);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $hashedPssword);
-        if ($stmt->execute()) {
+            
+        
+        if($stmt->execute()){
+
             $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
             $stmt1->bindValue(':email', $email);
             $stmt1->execute();
             $user = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
             return $user;
-        } else {
-            ErrorHandler::run(statusCode:500, message:'Something went wrong');
-            return;
         }
+        
+    }catch(\PDOException $e){
+        ErrorHandler::run(statusCode:500, message:$e->getMessage()); 
+    }
     }
     public static function findOne($data)
     {
