@@ -226,6 +226,8 @@ class AuthControllers
             ErrorHandler::run(statusCode:403, message:'You can not update your role');
         }
         UserModel::findByIdAndUpdate($user['id'], $body);
+        http_response_code(200);
+        print_r(json_encode(['status' => 'success', 'message' => 'Data has been updated successfully']));
     }
 
      //DELETEME////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
