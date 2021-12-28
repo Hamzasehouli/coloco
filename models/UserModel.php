@@ -135,6 +135,7 @@ class UserModel
             ErrorHandler::run(statusCode:404, message:'No user found');
             exit;
         }
+        $user = $stmt1->fetch();
         ////////////////////////
         $keys = array_keys($data);
         $str = implode(',', array_map(function ($d) {
@@ -146,10 +147,12 @@ class UserModel
             $stmt->bindValue(":$d", $v);
         endforeach;
         $stmt->bindValue(':id', $id);
-        $stmt->execute();
-        http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
-        exit;
+        if($stmt->execute()){
+            return $user;
+        }
+        // http_response_code(200);
+        // print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
+        // exit;
     }
 
 }

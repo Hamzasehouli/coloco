@@ -254,4 +254,99 @@ class AuthControllers
         http_response_code(200);
         print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
     }
+    public static function forgetpassword()
+    {
+        $data = json_decode(file_get_contents('php://input', true),true);
+
+        if(!$data){
+            ErrorHandler::run(statusCode:400, message:'Please enter your registered email');
+        }
+
+        extract($data);
+
+        if (!isset($email)||empty(str_replace(' ', '', $email)) || !str_contains(str_replace(' ', '', $email), '@') || !str_contains(explode('@', str_replace(' ', '', $email))[1], '.')) {
+            ErrorHandler::run(statusCode:400, message:'Please enter a valid email');
+        }
+
+        $user = Usermodel::findOne(['active'=>1, 'email'=>$email]);
+
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:404, message:'User no longer exists with the given email');
+        }
+        $bytes = random_bytes(20);
+        $crypt = bin2hex($bytes);
+        $expiresat = time() + (10 *60);
+        $link = "http://localhost:3000/api/v1/auth/resetpassword/${crypt}";
+        var_dump($crypt);
+        var_dump($expiresat);
+        SendEmail::sendEmail(reciever: $email, subject: 'RESET [LINK] valid 10 min', body: "Please use the linke to reset your password <a href=$link></a>");
+        UserModel::findByIdAndUpdate($user['id'], ['crypt'=>$crypt, 'expiresat'=>$expiresat]);
+        // http_response_code(200);
+        // print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
+    }
+
+    public static function resetpassword(){
+        $token = $_GET['token'] ?? null;
+        if(!$token){
+            ErrorHandler::run(statusCode:403, message:'Link not valid');
+        }
+        $user = Usermodel::findOne(['active'=>1, 'crypt'=>$token]);
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:400, message:'User no longer exists or the credentials are incorrect');
+            exit;
+        }
+        extract($user);
+        $now = time();
+        if($expiresat < $now){
+            UserModel::findByIdAndUpdate($user['id'], ['crypt'=>0, 'expiresat'=>0]);
+            ErrorHandler::run(statusCode:400, message:'link expired, please try again');
+        }
+
+        $data = json_decode(file_get_contents('php://input', true),true);
+
+        if(!$data){
+            ErrorHandler::run(statusCode:400, message:'Please enter your new valid password');
+        }
+
+       
+
+        if(!isset($data['password']) || empty($data['password'])){
+            ErrorHandler::run(statusCode:400, message:'Please enter your new valid password');
+        }
+        $newPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        UserModel::findByIdAndUpdate($user['id'], ['password'=>$newPassword,'crypt'=>0, 'expiresat'=>0]);
+        http_response_code(200);
+        print_r(json_encode(['status' => 'success', 'message' => 'Password reset successfully']));
+
+    }
+    public static function updatepassword(){
+        $user = self::isLoggedin();
+        if (!isset($user)) {
+            ErrorHandler::run(statusCode:400, message:'You are not logged in');
+        }
+
+        $data = json_decode(file_get_contents('php://input', true),true);
+
+        if(!$data){
+            ErrorHandler::run(statusCode:400, message:'Please fill all the required fields');
+        }
+        
+
+        extract($data);
+        if (!isset($newpassword)||empty(str_replace(' ', '', $newpassword)) || strlen(str_replace(' ', '', $newpassword)) < 8||!isset($currentpassword)||empty(str_replace(' ', '', $currentpassword)) || strlen(str_replace(' ', '', $currentpassword)) < 8||!isset($confirmnewpassword)||empty(str_replace(' ', '', $confirmnewpassword)) || strlen(str_replace(' ', '', $confirmnewpassword)) < 8|| $newpassword !== $confirmnewpassword) {
+            ErrorHandler::run(statusCode:400, message:'Please enter a valid password and confirm it, a valid password must have at least 8 chars'); 
+        }
+
+        $ispasswordvalid = password_verify($currentpassword, $user['password']);
+        if(!$ispasswordvalid){
+            ErrorHandler::run(statusCode:400, message:'Your current password is incorrect');
+        }
+        $hashedpassword = password_hash($newpassword, PASSWORD_DEFAULT);
+        UserModel::findByIdAndUpdate($user['id'], ['password'=>$hashedpassword]);
+        http_response_code(200);
+        echo(json_encode(['status' => 'success', 'message' => 'Password has been updated successfully']));
+        
+
+
+    }
 }

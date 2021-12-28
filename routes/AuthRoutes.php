@@ -16,6 +16,9 @@ declare(strict_types=1);
             $router->post('/api/v1/auth/logout', [AuthControllers::class, 'logout']);
             $router->get('/api/v1/auth/getme', [AuthControllers::class, 'getMe']);
             $router->post('/api/v1/auth/updateme', [AuthControllers::class, 'updateMe']);
+            $router->post('/api/v1/auth/forgetpassword', [AuthControllers::class, 'forgetpassword']);
+            $router->post('/api/v1/auth/resetpassword', [AuthControllers::class, 'resetpassword']);
+            $router->post('/api/v1/auth/updatepassword', [AuthControllers::class, 'updatepassword']);
             $router->post('/api/v1/auth/deleteme', [AuthControllers::class, 'deleteMe']);
             $router->call();
            
