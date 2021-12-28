@@ -7,7 +7,7 @@ namespace coloco\controllers;
 use coloco\helpers\GenerateJwt;
 use coloco\helpers\ErrorHandler;
 use coloco\models\Usermodel;
-
+use coloco\helpers\SendEmail;
 class AuthControllers
 {
     //SIGNUP////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,11 +61,7 @@ class AuthControllers
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
         setcookie(name:'token', value:"$jwt", path:'/', httponly:true);
-        mail("selawax240@wiicheat.com","welcome","welcome $firstname to coloco family",array(
-            'From' => 'team@coloco.com',
-            'Reply-To' => 'team@coloco.com',
-            'X-Mailer' => 'PHP/' . phpversion()
-        ));
+        SendEmail::sendEmail(reciever: $email, subject: 'welcome to Coloco family', body: "Welcome $firstname to coloco family, we are very happy to join us, if you have anay question, do not hesitate to ask us");
         http_response_code(201);
         echo(json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
 
@@ -103,12 +99,16 @@ class AuthControllers
         //     print_r(json_encode(['status' => 'success', 'data' => $user]));
         // }
 
-       
+        ///////////////////////////////////////
+
+        
+  
+
 
         return $user;
 
         ///////////////////////////////////////////////////////
-
+        
     }
 
      //PROTECT////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
