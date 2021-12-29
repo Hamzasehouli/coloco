@@ -99,6 +99,7 @@ class AdModel
         $stmt1->bindValue(':user', $user['id']);
         $stmt1->execute();
         $row = $stmt1->rowCount();
+        $ad = $stmt1->fetch();
         if ($row < 1) {
             http_response_code(404);
             print_r(json_encode(['status' => 'fail', 'message' => 'No ad found']));
@@ -109,9 +110,10 @@ class AdModel
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        unlink($_SERVER['DOCUMENT_ROOT'] . '/public/ads/images/' . $ad['image'] . '.png');
         http_response_code(204);
-        print_r(json_encode(['status' => 'success', 'message' => 'ad has been deleted successfully']));
-        return;
+        echo(json_encode(['status' => 'success', 'message' => 'ad has been deleted successfully']));
+        exit;
 
     }
     public static function findByIdAndUpdate($id, $data, $user)

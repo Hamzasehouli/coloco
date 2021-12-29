@@ -21,6 +21,27 @@ class AdControllers
     public static function createAd()
     {
         $userArray = AuthControllers::isLoggedin();
+       
+        if (!empty($_FILES['image']['tmp_name'])) {
+            $generateImageName = function ($num) {
+                $chars = '1234567890QWERTZUIOPLKJHGFDSAYXCVBNMqwertzuioplkjhgfdsayxcvbnm';
+                $imageName = $chars[3];
+                $charsLen = strlen($chars);
+                // echo $randoNum;
+                for ($i = 0; $i <= $num; $i++) {
+                    $randoNum = rand(1, $charsLen);
+                    $imageName .= $chars[$randoNum];
+                }
+                return $imageName;
+            };
+    
+            $imageName = $generateImageName(20);
+    
+            move_uploaded_file($_FILES["image"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . '/public/ads/images/' . $imageName . '.png');
+        }else{
+            ErrorHandler::run(statusCode:400, message:'Please upload cover image');
+        }
+        
 
         $body = json_decode(file_get_contents('php://input', true), true);
         if(!$body){
@@ -45,9 +66,9 @@ class AdControllers
         if (!isset($street) || !is_string($street) || empty(str_replace(' ', '', $street))) {
             ErrorHandler::run(statusCode:400, message:'Please enter the street of the ad');
         }
-        if (!isset($image) || !is_string($image) || empty(str_replace(' ', '', $image))) {
-            ErrorHandler::run(statusCode:400, message:'Please enter the image of the ad');
-        }
+        // if (!isset($image) || !is_string($image) || empty(str_replace(' ', '', $image))) {
+        //     ErrorHandler::run(statusCode:400, message:'Please enter the image of the ad');
+        // }
 
         if (!isset($furnished)|| !is_bool($furnished)) {
             ErrorHandler::run(statusCode:400, message:'Please enter the lodgement is furnished');
@@ -110,7 +131,7 @@ class AdControllers
             // 'bathroom' => $body['bathroom'],
             // 'kitchen' => $body['kitchen'],
             'furnished' => $body['furnished'],
-            'image' => $body['image'],
+            'image' => $imageName,
             // 'shower' => $body['shower'],
         ];
         $data['user'] = $userArray['id'];
