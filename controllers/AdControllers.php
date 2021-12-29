@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace coloco\controllers;
 
 use coloco\models\Admodel;
-
+use coloco\helpers\ErrorHandler;
 class AdControllers
 {
     public static function getAds()
     {
         $ads = Admodel::find();
         if (!isset($ads)) {
-            return;
+            ErrorHandler::run(statusCode:400, message:'No ads found');
         }
         http_response_code(200);
         echo(json_encode(['status' => 'success', 'results' => count($ads), 'data' => $ads]));
@@ -20,14 +20,72 @@ class AdControllers
 
     public static function createAd()
     {
-        $user = AuthControllers::isLoggedin();
+        $userArray = AuthControllers::isLoggedin();
 
         $body = json_decode(file_get_contents('php://input', true), true);
+        if(!$body){
+            ErrorHandler::run(statusCode:400, message:'Please fill the required fields');
+        }
+
+        extract($body);
+
+        if (!isset($description) || !is_string($description) || empty(str_replace(' ', '', $description) )) {
+            ErrorHandler::run(statusCode:400, message:'Please describe your ad');
+        }
+
+        if (!isset($title) || !is_string($title) || empty(str_replace(' ', '', $title))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the title of the ad');
+        }
+        if (!isset($city) || !is_string($city) || empty(str_replace(' ', '', $city))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the city of the ad');
+        }
+        if (!isset($district) || !is_string($district) || empty(str_replace(' ', '', $district))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the district of the ad');
+        }
+        if (!isset($street) || !is_string($street) || empty(str_replace(' ', '', $street))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the street of the ad');
+        }
+        if (!isset($image) || !is_string($image) || empty(str_replace(' ', '', $image))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the image of the ad');
+        }
+
+        if (!isset($furnished)|| !is_bool($furnished)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the lodgement is furnished');
+        }
+
+        if (!isset($deposit) || !is_int($deposit)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter how much the deposit is, if there is no deposit, write 0');
+        }
+        if (!isset($price) || !is_int($price)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the rent price');
+        }
+        if (!isset($floor) || !is_int($floor)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter floor level');
+        }
+        if (!isset($size) || !is_int($size)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the area size');
+        }
+        if (!isset($house_number) || !is_int($house_number)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the house number');
+        }
+        if (!isset($zip) || !is_int($zip)) {
+            ErrorHandler::run(statusCode:400, message:'Please enter the area size');
+        }
+        if (!isset($available_from) || !is_string($available_from) || empty(str_replace(' ', '', $available_from))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter from when the lodgement is available');
+        }
+        if (!isset($available_to) || !is_string($available_to) || empty(str_replace(' ', '', $available_to))) {
+            ErrorHandler::run(statusCode:400, message:'Please enter until whene the lodgement is available');
+        }
+        if (isset($data['user'])) {
+            ErrorHandler::run(statusCode:400, message:'something went wrong');
+        }
+        
 
         $data = ['title' => $body['title'],
             'city' => $body['city'],
-            'category' => $body['category'],
-            'rent_type' => $body['rent_type'],
+            // 'category' => $body['category'],
+            // 'rent_type' => $body['rent_type'],
             'district' => $body['district'],
             'street' => $body['street'],
             'house_number' => $body['house_number'],
@@ -37,44 +95,38 @@ class AdControllers
             'size' => $body['size'],
             'floor' => $body['floor'],
             'price' => $body['price'],
-            'deposit' => $body['parking'],
+            'deposit' => $body['deposit'],
             'description' => $body['description'],
-            'i_am' => $body['i_am'],
-            'wash_machine' => $body['wash_machine'],
-            'dishwasher' => $body['dishwasher'],
-            'terrace' => $body['terrace'],
-            'tv' => $body['tv'],
-            'parking' => $body['parking'],
-            'balcony' => $body['balcony'],
-            'garden' => $body['garden'],
+            // 'i_am' => $body['i_am'],
+            // 'wash_machine' => $body['wash_machine'],
+            // 'dishwasher' => $body['dishwasher'],
+            // 'terrace' => $body['terrace'],
+            // 'tv' => $body['tv'],
+            // 'parking' => $body['parking'],
+            // 'balcony' => $body['balcony'],
+            // 'garden' => $body['garden'],
             'elevator' => $body['elevator'],
-            'pets_allowed' => $body['pets_allowed'],
-            'bathroom' => $body['bathroom'],
-            'kitchen' => $body['kitchen'],
+            // 'pets_allowed' => $body['pets_allowed'],
+            // 'bathroom' => $body['bathroom'],
+            // 'kitchen' => $body['kitchen'],
             'furnished' => $body['furnished'],
-            'shower' => $body['shower'],
+            'image' => $body['image'],
+            // 'shower' => $body['shower'],
         ];
-        $data['userId'] = $user['id'];
-        $ad = AdModel::create($data);
-        if (!isset($ad)) {
-            return;
-        }
-
-        http_response_code(201);
-        echo(json_encode(['status' => 'success', 'data' => $ad]));
+        $data['user'] = $userArray['id'];
+        AdModel::create($data);
+        
 
     }
     public static function getAd()
     {
         extract($_GET);
         if (!isset($id)) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'Id of the ad is missing');
         }
         $ad = AdModel::findById((string) $id);
         if (!isset($ad)) {
-            return;
+            ErrorHandler::run(statusCode:404, message:'No ad found with that id');
         }
 
         http_response_code(200);
@@ -82,30 +134,24 @@ class AdControllers
     }
     public static function updateAd()
     {
-        AuthControllers::isLoggedin();
+        $user = AuthControllers::isLoggedin();
         $body = json_decode(json_encode(json_decode(file_get_contents('php://input', true))), true);
         extract($_GET);
         if (!isset($id)) {
-            http_response_code(403);
-            echo(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'Id of the ad is missing');
         }
-        if (!isset($body)) {
-            http_response_code(403);
-            echo(json_encode(['status' => 'fail', 'message' => 'No input has been entered']));
-            return;
+        if (!$body) {
+            ErrorHandler::run(statusCode:404, message:'Please fill all the required fields');
         }
-        AdModel::findByIdAndUpdate($id, $body);
+        AdModel::findByIdAndUpdate($id, $body, $user);
     }
     public static function deleteAd()
     {
-        AuthControllers::isLoggedin();
+        $user = AuthControllers::isLoggedin();
         extract($_GET);
         if (!isset($id)) {
-            http_response_code(403);
-            echo(json_encode(['status' => 'fail', 'message' => 'Id of the ad is missing']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'Id of the ad is missing');
         }
-        AdModel::findByIdAndDelete($id);
+        AdModel::findByIdAndDelete($id, $user);
     }
 }
