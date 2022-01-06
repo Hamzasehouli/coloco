@@ -5,7 +5,7 @@ const username = document.querySelector(".username");
 const email = document.querySelector(".email");
 const password = document.querySelector(".password");
 
-submiSignup.addEventListener("submit", async (e) => {
+export default submiSignup.addEventListener("submit", async (e) => {
   e.preventDefault();
   const res = await fetch("/api/v1/auth/signup", {
     method: "POST",

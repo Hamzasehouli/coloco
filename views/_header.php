@@ -1,3 +1,13 @@
+<?php
+use coloco\helpers\GenerateJwt;
+if (isset($_SESSION['token'])) {
+    $decoded = GenerateJwt::verifyToken($_SESSION['token']);
+    extract($decoded);
+}
+
+?>
+
+
 <nav style="background-color:var(--color-primary-dark) !important; padding:1.5rem"
     class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- <a class="navbar-brand" href="#">Navbar</a>
@@ -33,8 +43,25 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
 
+            <?php
+if ($istokenValid) {
+
+    ?>
+            <form class="form-logout">
+                <button type="submit">Logout</button>
+            </form>
+            <?php
+
+} else {
+
+    ?>
             <a style="margin-right:8px" class=" btn btn-primary" href="/login">Login</a>
             <a class="btn btn-primary" href="/signup">Signup</a>
+            <?php
+
+}
+?>
+
             <!-- <span>user</span> -->
 
         </form>

@@ -174,7 +174,9 @@ class AuthControllers
     public static function logout()
     {
         session_destroy();
-        http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
+        echo 'hhhh';
+        // http_response_code(200);
+        // print_r(json_encode(['status' => 'success', 'message' => 'You are logged out successfully']));
+        header('Location:/login');
     }
 }

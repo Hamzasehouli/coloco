@@ -14,7 +14,7 @@ include_once '_header.php';
 ?>
     </header>
     <main>
-        <form class="form form-signup" method="POST">
+        <form action="/signup" class="form form-signup" method="POST">
             <h2>Sign up</h2>
             <div class="form-group">
                 <label for="exampleInputEmail1">Firstname</label>
@@ -55,7 +55,7 @@ include_once '_header.php';
 include_once '_footer.php';
 ?>
     </footer>
-    <script src="/public/scripts/signup.js"></script>
+
     < /body>
 
         < /html>

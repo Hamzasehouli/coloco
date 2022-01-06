@@ -3,7 +3,7 @@ const submitLogin = document.querySelector(".form-login");
 const email = document.querySelector(".email");
 const password = document.querySelector(".password");
 
-submitLogin.addEventListener("submit", async (e) => {
+export default submitLogin.addEventListener("submit", async (e) => {
   e.preventDefault();
   const res = await fetch("/api/v1/auth/login", {
     method: "POST",
