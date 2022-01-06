@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\models;
 
 use coloco\config\Database;
+use coloco\helpers\ErrorHandler;
 
 $con = Database::connect();
 
@@ -31,185 +34,20 @@ class AdModel
         extract($data);
         global $con;
 
-        if (empty(str_replace(' ', '', $title))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the title of the ad']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $userId))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'User id is missing']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $shower))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a shower']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $furnished))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the lodgment is furnished']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $kitchen))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a kitchen']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $bathroom))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a bathroom']));
-            return;
-        }
-        if ($tv === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if tv is available']));
-            return;
-        }
-        if ($pets_allowed === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if pets are allowed']));
-            return;
-        }
-        if ($elevator === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is an elevator']));
-            return;
-        }
-        if ($garden === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a garden']));
-            return;
-        }
-        if ($balcony === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a balcony']));
-            return;
-        }
-        if ($terrace === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a terrace']));
-            return;
-        }
-        if ($dishwasher === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a dishwasher']));
-            return;
-        }
-        if ($wash_machine === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if there is a wash machine']));
-            return;
-        }
-        // if (empty(str_replace(' ', '', $photos))) {
-        //     http_response_code(403);
-        //     print_r(json_encode(['status' => 'fail', 'message' => 'Please upload at least three photo']));
-        //     return;
-        // }
-        // if (empty(str_replace(' ', '', $photo))) {
-        //     http_response_code(403);
-        //     print_r(json_encode(['status' => 'fail', 'message' => 'Please provide a main photo']));
-        //     return;
-        // }
-        if (empty(str_replace(' ', '', $i_am))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter your status']));
-            return;
-        }
-        if ($deposit === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter how much the deposit is, if there is no deposit, write 0']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $description))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please describe your ad']));
-            return;
-        }
-        if (str_replace(' ', '', $price) === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the total rent']));
-            return;
-        }
-        if (str_replace(' ', '', $parking) === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter if parking is available']));
-            return;
-        }
-        if (str_replace(' ', '', $floor) === '') {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter floor level']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $size))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the area']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $available_from))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter from when the lodgement is available']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $available_to))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter until when the lodgement is available']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $house_number))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the house number']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $zip))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter a valid zip code']));
-            return;
-        }
-
-        if (empty(str_replace(' ', '', $category))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the category']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $rent_type))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter rent type']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $city))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the city']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $district))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the district']));
-            return;
-        }
-        if (empty(str_replace(' ', '', $street))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter the street']));
-            return;
-        }
-
-        $query = 'INSERT INTO ad(title, city, category, rent_type, district, street, house_number, zip, available_from, available_to, size, floor, parking, price,
-        deposit, description, i_am,  wash_machine, dishwasher, terrace, balcony, garden, elevator, pets_allowed, tv, bathroom,
-        kitchen, furnished, shower, user) VALUES(:title, :city, :category, :rent_type, :district, :street, :house_number, :zip, :available_from, :available_to, :size, :floor, :parking, :price,
-        :deposit, :description, :i_am, :wash_machine, :dishwasher, :terrace, :balcony, :garden, :elevator, :pets_allowed, :tv, :bathroom,
-        :kitchen, :furnished, :shower, :userId)';
+        $query = 'INSERT INTO ad(title, city, image,  district, street, house_number, zip, available_from, available_to, size, floor, price,
+        deposit, description, elevator, furnished, user) VALUES(:title, :city,:image, :district, :street, :house_number, :zip, :available_from, :available_to, :size, :floor, :price, :deposit, :description, :elevator, :furnished, :user)';
         $stmt = $con->prepare($query);
         foreach ($data as $k => $v):
             $stmt->bindValue(":$k", $v);
         endforeach;
 
-        if ($stmt->execute()) {
-
-            return 'Ad created successfully';
-        } else {
-            http_response_code(500);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Something went wrong']));
-            return;
+        try{
+            $stmt->execute();
+            http_response_code(201);
+            echo(json_encode(['status' => 'success', 'message' => 'Ad added successfully']));
+            
+        }catch(PDOException $e){
+            echo $e->getMessage();
         }
     }
     public static function findOne($data)
@@ -252,14 +90,16 @@ class AdModel
         $ad = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $ad;
     }
-    public static function findByIdAndDelete($id)
+    public static function findByIdAndDelete($id, $user)
     {
         global $con;
-        $query = 'SELECT * FROM ad WHERE id=:id';
+        $query = 'SELECT * FROM ad WHERE id=:id AND user=:user';
         $stmt1 = $con->prepare($query);
         $stmt1->bindValue(':id', $id);
+        $stmt1->bindValue(':user', $user['id']);
         $stmt1->execute();
         $row = $stmt1->rowCount();
+        $ad = $stmt1->fetch();
         if ($row < 1) {
             http_response_code(404);
             print_r(json_encode(['status' => 'fail', 'message' => 'No ad found']));
@@ -270,18 +110,20 @@ class AdModel
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        unlink($_SERVER['DOCUMENT_ROOT'] . '/public/ads/images/' . $ad['image'] . '.png');
         http_response_code(204);
-        print_r(json_encode(['status' => 'success', 'message' => 'ad has been deleted successfully']));
-        return;
+        echo(json_encode(['status' => 'success', 'message' => 'ad has been deleted successfully']));
+        exit;
 
     }
-    public static function findByIdAndUpdate($id, $data)
+    public static function findByIdAndUpdate($id, $data, $user)
     {
 
         global $con;
-        $query = 'SELECT * FROM ad WHERE id=:id';
+        $query = 'SELECT * FROM ad WHERE id=:id AND user=:user';
         $stmt1 = $con->prepare($query);
         $stmt1->bindValue(':id', $id);
+        $stmt1->bindValue(':user', $user['id']);
         $stmt1->execute();
         $row = $stmt1->rowCount();
         if ($row < 1) {

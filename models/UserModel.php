@@ -1,22 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace coloco\models;
 
 use coloco\config\Database;
+use coloco\helpers\ErrorHandler;
 
 $con = Database::connect();
 
 class UserModel
 {
-    // private $id = '';
-    // private $firstname = '';
-    // private $lastname = '';
-    // private $username = '';
-    // private $email = '';
-    // private $role = '';
-    // private $password = '';
-    // private $created_at = '';
-
+    
     public static function find()
     {
 
@@ -26,48 +20,20 @@ class UserModel
         $stmt->execute();
         $row = $stmt->rowCount();
         if ($row < 1) {
-            http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No users found']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'No users found'); 
+            exit;
         }
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $results;
     }
+    
+
     public static function create($username, $firstname, $lastname, $email, $password)
     {
+        
+        try{
         global $con;
-
-        if (empty(str_replace(' ', '', $firstname))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter your firstname']));
-            return;
-        }
-
-        if (empty(str_replace(' ', '', $lastname))) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter your lastname']));
-            return;
-        }
-
-        if (empty(str_replace(' ', '', $username)) || strlen(str_replace(' ', '', $username)) < 3) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter a valid username']));
-            return;
-        }
-
-        if (empty(str_replace(' ', '', $email)) || !str_contains(str_replace(' ', '', $email), '@') || !str_contains(explode('@', str_replace(' ', '', $email))[1], '.')) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter a valid email']));
-
-            return;
-        }
-
-        if (empty(str_replace(' ', '', $password)) || strlen(str_replace(' ', '', $password)) < 8) {
-            http_response_code(403);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Please enter a valid password, password must have at least 8 chars']));
-            return;
-        }
-
+        
         $query = 'INSERT INTO user(username, firstname, lastname, email, password) VALUES(:username,:firstname,:lastname,:email,:password)';
         $stmt = $con->prepare($query);
         $hashedPssword = password_hash($password, PASSWORD_DEFAULT);
@@ -76,36 +42,39 @@ class UserModel
         $stmt->bindValue(':lastname', $lastname);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $hashedPssword);
-        if ($stmt->execute()) {
+            
+        
+        if($stmt->execute()){
+
             $stmt1 = $con->prepare("SELECT * FROM user WHERE email=:email");
             $stmt1->bindValue(':email', $email);
             $stmt1->execute();
             $user = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
             return $user;
-        } else {
-            http_response_code(500);
-            print_r(json_encode(['status' => 'fail', 'message' => 'Something went wrong']));
-            return;
         }
+        
+    }catch(\PDOException $e){
+        ErrorHandler::run(statusCode:500, message:$e->getMessage()); 
+    }
     }
     public static function findOne($data)
     {
         extract($data);
         $keys = array_keys($data);
         global $con;
-        $query = 'SELECT * FROM user WHERE ' . implode(',', array_map(function ($k) {
+        $query = 'SELECT * FROM user WHERE ' . implode(' AND ', array_map(function ($k) {
             return "$k=:$k";
         }, $keys));
+        
         $stmt = $con->prepare($query);
-        foreach ($data as $k => $v):
+        foreach ($data as $k =>$v):
             $stmt->bindValue(":$k", $v);
         endforeach;
         $stmt->execute();
         $row = $stmt->rowCount();
         if ($row < 1) {
-            http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found, or the credentials are incorrect']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'No user found, or the credentials are incorrect');
+            exit;
         }
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -115,19 +84,20 @@ class UserModel
     public static function findById($id)
     {
         global $con;
-        $query = 'SELECT * FROM user WHERE id=:id';
+        $query = 'SELECT * FROM user WHERE id=:id AND active=1';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         $row = $stmt->rowCount();
         if ($row < 1) {
-            http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'No user found');
+            exit;
         }
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $user;
     }
+
+    
     public static function findByIdAndDelete($id)
     {
         global $con;
@@ -137,18 +107,19 @@ class UserModel
         $stmt1->execute();
         $row = $stmt1->rowCount();
         if ($row < 1) {
-            http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'No user found');
+            exit;
         }
         //////////////////7
-        $query = 'DELETE FROM user WHERE id=:id';
+        // $query = 'DELETE FROM user WHERE id=:id';
+        $query = 'UPDATE user SET active=0 WHERE id=:id';
         $stmt = $con->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+        setcookie(name:'token', value:"", path:'/', httponly:true);
         http_response_code(204);
         print_r(json_encode(['status' => 'success', 'message' => 'user has been deleted successfully']));
-        return;
+        exit;
 
     }
     public static function findByIdAndUpdate($id, $data)
@@ -161,10 +132,10 @@ class UserModel
         $stmt1->execute();
         $row = $stmt1->rowCount();
         if ($row < 1) {
-            http_response_code(404);
-            print_r(json_encode(['status' => 'fail', 'message' => 'No user found']));
-            return;
+            ErrorHandler::run(statusCode:404, message:'No user found');
+            exit;
         }
+        $user = $stmt1->fetch();
         ////////////////////////
         $keys = array_keys($data);
         $str = implode(',', array_map(function ($d) {
@@ -176,10 +147,12 @@ class UserModel
             $stmt->bindValue(":$d", $v);
         endforeach;
         $stmt->bindValue(':id', $id);
-        $stmt->execute();
-        http_response_code(200);
-        print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
-        return;
+        if($stmt->execute()){
+            return $user;
+        }
+        // http_response_code(200);
+        // print_r(json_encode(['status' => 'success', 'message' => 'user has been updated successfully']));
+        // exit;
     }
 
 }

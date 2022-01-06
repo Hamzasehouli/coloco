@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\controllers;
 
 use coloco\models\Usermodel;

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\helpers;
 
 class GenerateJwt
 {
 
-    public function generateToken($id)
+    public function generateToken(string $id):string
     {
 
         

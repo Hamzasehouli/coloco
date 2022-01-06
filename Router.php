@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco;
 
 class Router
@@ -20,17 +22,31 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $path = $_SERVER['PATH_INFO'] ?? '/';
+        
         $fn = null;
 
         if ($method === 'GET') {
-            $fn = $this->getRoutes[$path];
+            if(isset($this->getRoutes[$path])){
+               
+                $fn = $this->getRoutes[$path];
+            }
         } else {
-            $fn = $this->postRoutes[$path];
+            if(isset($this->postRoutes[$path])){
+                $fn = $this->postRoutes[$path];
+            }
         }
         if ($fn) {
             call_user_func($fn);
         } else {
-            echo "No route found with:$path";
+
+            if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/auth')) {
+               http_response_code(404);
+               echo(json_encode(['status'=>'fail', 'message'=> 'This route: ' . $_SERVER['REQUEST_URI'] . ' not found in this API']));
+           }else{
+            header('Location:/error');
+           }
+            exit;
         }
     }
 }
+

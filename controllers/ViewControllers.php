@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace coloco\controllers;
 
 use coloco\controllers\AuthControllers;
@@ -38,5 +40,9 @@ class ViewControllers
     public static function login()
     {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/login.php';
+    }
+    public static function renderError()
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/views/_error.php';
     }
 }
