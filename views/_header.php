@@ -7,63 +7,39 @@ if (isset($_SESSION['token'])) {
 
 ?>
 
+<header id="header">
 
-<nav style="background-color:var(--color-primary-dark) !important; padding:1.5rem"
-    class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button> -->
+    <nav class="nav">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a style="color:white !important" class=" nav-link" href="/">Coloco <span
-                        class="sr-only">(current)</span></a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li> -->
-            <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
+
+
+        <a style="color:white" class="nav__logo-link" href="/">Coloco </a>
+
+        <ul class="nav__links">
+
+
 
             <?php
-if ($istokenValid) {
+if (isset($istokenValid)) {
 
     ?>
-            <form class="form-logout">
-                <button type="submit">Logout</button>
-            </form>
+
+            <button type="submit">Logout</button>
+
             <?php
 
 } else {
 
     ?>
-            <a style="margin-right:8px" class=" btn btn-primary" href="/login">Login</a>
-            <a class="btn btn-primary" href="/signup">Signup</a>
+            <li class="nav__item"><a class="btn btn-primary nav__link" href="/login">Login</a></li>
+            <li class="nav__item"><a class="btn btn-primary nav__link" href="/signup">Signup</a></li>
             <?php
 
 }
 ?>
 
-            <!-- <span>user</span> -->
 
-        </form>
-    </div>
-</nav>
+
+        </ul>
+    </nav>
+</header>

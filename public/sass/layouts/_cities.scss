@@ -1,0 +1,52 @@
+.cities__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 3rem;
+  margin: 4rem 0;
+}
+
+.cities__item {
+  height: 20rem;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  border-radius: 5px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.315);
+  background-blend-mode: darken;
+  filter: saturate(160%);
+  padding: 1rem;
+}
+.cities__item--tangier {
+  background-image: url("/public/images/tangier.jpg") !important;
+}
+.cities__item--fes {
+  background-image: url("/public/images/fes-2.jpg") !important;
+}
+.cities__item--agadir {
+  background-image: url("/public/images/agadir-2.jpg") !important;
+}
+.cities__item--casablanca {
+  background-image: url("/public/images/casablanca.jpg") !important;
+}
+.cities__item--oujda {
+  background-image: url("/public/images/oujda.jpg") !important;
+}
+.cities__item--rabat {
+  background-image: url("/public/images/rabat.jpg") !important;
+}
+.cities__item--agadir {
+  background-image: url("/public/images/agadir-2.jpg") !important;
+}
+.cities__item--marrakesh {
+  background-image: url("/public/images/marrakesh-1.jpg") !important;
+}
+.cities__item--laayoune {
+  background-image: url("/public/images/laayoune-1.jpg") !important;
+}
+
+.cities__item--title {
+  color: black !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  text-transform: capitalize !important;
+}

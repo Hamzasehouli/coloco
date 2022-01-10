@@ -1,0 +1,24 @@
+.form {
+  width: 40%;
+  margin: 7rem auto;
+  box-shadow: 2px 2px 20px rgba(99, 98, 98, 0.226);
+  padding: 2rem;
+}
+
+.form h2 {
+  margin-bottom: 2rem;
+}
+
+.form__hero input {
+  /* height: 2rem; */
+}
+
+.form__control {
+  width: 100%;
+  display: flex;
+}
+
+.form__control > * {
+  width: 100%;
+  margin-right: 1rem;
+}

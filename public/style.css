@@ -1,18 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,300&display=swap");
 :root {
   --color-primary-light: #6e2db0;
   --color-primary: #3b185f;
   --color-primary-dark: #2a1144;
-
   --color-secondary-light: #d54693;
   --color-secondary: #a12568;
   --color-secondary-dark: #5c153b;
+  --color-light: #f7f7f7;
 }
-html {
-  font-size: 62.5% !important;
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
 }
 
 body {
-  font-size: 1.6rem !important;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 input {
@@ -23,26 +28,76 @@ main {
   min-height: 100vh;
 }
 
-* {
-  box-sizing: border-box !important;
+a {
+  text-decoration: navajowhite !important;
+  transition: all 0.5s !important;
 }
 
-.form {
-  width: 40%;
-  margin: 7rem auto;
-  box-shadow: 2px 2px 20px rgba(99, 98, 98, 0.226);
-  padding: 2rem;
+a:hover {
+  transform: scale(0.94) !important;
 }
 
-.form h2 {
-  margin-bottom: 2rem;
+.section {
+  width: 100% !important;
+  padding: 4rem 10rem !important;
+}
+
+.ad {
+  background-color: rgba(235, 235, 235, 0.527);
+}
+
+.ad figure {
+  position: relative;
+  background-color: var(--color-tertiary-light);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(45rem, 1fr));
+  padding: 4rem;
+  border-radius: 5px;
+}
+
+.illustration {
+  width: 40rem;
+  height: 20rem;
+  top: 0;
+  left: 10rem;
+  position: relative;
+}
+
+/* input {
+  padding: 1.6rem !important;
+} */
+.checks {
+  list-style: decimal !important;
+  /* display: flex;
+  align-items: center; */
+}
+
+.mb {
+  margin-bottom: 7rem;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.btn {
+  border-radius: 100px;
+  padding: 0.5rem 1.6rem;
 }
 
 .btn-primary {
   font-size: 1.6rem;
   background-color: var(--color-primary-light) !important;
   border-color: var(--color-primary-light) !important;
+  color: var(--color-light);
 }
+
 .btn-primary:hover {
   background-color: var(--color-secondary-light) !important;
   border-color: var(--color-secondary-light) !important;
@@ -53,6 +108,7 @@ main {
   border-color: var(--color-primary-light) !important;
   color: var(--color-primary-light) !important;
 }
+
 .btn-outline-light {
   font-size: 1.6rem;
 }
@@ -63,48 +119,14 @@ main {
   color: white !important;
 }
 
-.figure__hero {
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(0, 0, 0, 0.26),
-      rgba(0, 0, 0, 0.253)
-    ),
-    url("/public/images/hero.jpg");
-  background-position: bottom;
-  background-size: cover;
-  height: 70vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+html {
+  font-size: 62.5%;
+  font-family: "Lato", sans-serif;
 }
 
-.form__hero {
-  min-width: 60%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.336);
-  padding: 1.2rem;
-  border-radius: 3px;
-}
-.form__hero input {
-  /* height: 2rem; */
-}
-
-.form__control {
-  width: 100%;
-  display: flex;
-}
-
-.form__control > * {
-  width: 100%;
-  margin-right: 1rem;
-}
-
-.footer {
-  background-color: var(--color-primary) !important;
+body {
+  font-size: 1.6rem;
+  margin: 0;
 }
 
 .cities__container {
@@ -125,30 +147,39 @@ main {
   filter: saturate(160%);
   padding: 1rem;
 }
+
 .cities__item--tangier {
   background-image: url("/public/images/tangier.jpg") !important;
 }
+
 .cities__item--fes {
   background-image: url("/public/images/fes-2.jpg") !important;
 }
+
 .cities__item--agadir {
   background-image: url("/public/images/agadir-2.jpg") !important;
 }
+
 .cities__item--casablanca {
   background-image: url("/public/images/casablanca.jpg") !important;
 }
+
 .cities__item--oujda {
   background-image: url("/public/images/oujda.jpg") !important;
 }
+
 .cities__item--rabat {
   background-image: url("/public/images/rabat.jpg") !important;
 }
+
 .cities__item--agadir {
   background-image: url("/public/images/agadir-2.jpg") !important;
 }
+
 .cities__item--marrakesh {
   background-image: url("/public/images/marrakesh-1.jpg") !important;
 }
+
 .cities__item--laayoune {
   background-image: url("/public/images/laayoune-1.jpg") !important;
 }
@@ -160,37 +191,101 @@ main {
   text-transform: capitalize !important;
 }
 
-a {
-  text-decoration: navajowhite !important;
-  transition: all 0.5s !important;
+.footer {
+  background-color: var(--color-primary);
+  padding: 3rem 0 0 0;
+  color: white;
 }
 
-a:hover {
-  transform: scale(0.94) !important;
-}
-.section {
-  width: 100% !important;
-  padding: 4rem 10rem !important;
-}
-
-.ad {
-  background-color: rgba(235, 235, 235, 0.527);
-}
-.ad figure {
-  position: relative;
-  background-color: var(--color-tertiary-light);
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(45rem, 1fr));
-  padding: 4rem;
-  border-radius: 5px;
+.copyright {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
 }
 
-.illustration {
-  width: 40rem;
-  height: 20rem;
-  top: 0;
-  left: 10rem;
-  position: relative;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto;
+}
+.container > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.newsletter {
+  display: flex;
+  align-items: center;
+}
+
+.form {
+  width: 40%;
+  margin: 7rem auto;
+  box-shadow: 2px 2px 20px rgba(99, 98, 98, 0.226);
+  padding: 2rem;
+}
+
+.form h2 {
+  margin-bottom: 2rem;
+}
+
+.form__hero input {
+  /* height: 2rem; */
+}
+
+.form__control {
+  width: 100%;
+  display: flex;
+}
+
+.form__control > * {
+  width: 100%;
+  margin-right: 1rem;
+}
+
+#header {
+  width: 100%;
+  background: var(--color-primary);
+}
+
+.nav {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 4rem;
+}
+.nav__links {
+  list-style: none;
+  display: flex;
+}
+.nav__item:not(:last-of-type) {
+  margin-right: 1rem;
+}
+
+.figure__hero {
+  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.26), rgba(0, 0, 0, 0.253)), url("/public/images/hero.jpg");
+  background-position: bottom;
+  background-size: cover;
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__hero {
+  min-width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.336);
+  padding: 1.2rem;
+  border-radius: 3px;
 }
 
 .profile {
@@ -201,21 +296,26 @@ a:hover {
   flex-wrap: wrap;
   width: 100%;
 }
+
 .profile__list {
   flex-basis: 30%;
   list-style: none;
 }
+
 .profile__items {
   border-top: 1px solid rgba(105, 104, 104, 0.24);
 }
+
 .profile__items:last-child {
   border-bottom: 1px solid rgba(105, 104, 104, 0.24);
 }
+
 .profile__links {
   display: block;
   padding: 2rem;
   text-decoration: none;
 }
+
 .profile__container {
   flex-grow: 1;
   display: flex;
@@ -223,6 +323,7 @@ a:hover {
   align-items: center;
   padding: 2rem;
 }
+
 .profile__container a,
 .profile__container button {
   padding: 1rem;
@@ -230,15 +331,18 @@ a:hover {
   display: block;
   text-align: center;
 }
+
 .profile__container > * {
   width: 70%;
   margin-bottom: 10rem;
 }
+
 .profile__container > * > .form-backend_btn {
   display: inline-block;
   width: 20rem;
   float: right;
 }
+
 .profile__container > * > * {
   width: 100%;
 }
@@ -249,6 +353,7 @@ a:hover {
   margin-bottom: 1.5rem;
   align-items: space-between;
 }
+
 .profile__form__box input,
 .profile__form__box select {
   padding: 1rem;
@@ -258,6 +363,7 @@ a:hover {
   border: 1px solid rgba(105, 104, 104, 0.24);
   margin-top: 0.8rem;
 }
+
 .profile__form__box input:focus,
 .profile__form__box select:focus {
   outline: 1px solid rgba(105, 104, 104, 0.24);
@@ -268,35 +374,21 @@ a:hover {
   color: black;
 }
 
-/* input {
-  padding: 1.6rem !important;
-} */
-
-.checks {
-  list-style: decimal !important;
-  /* display: flex;
-  align-items: center; */
-}
-
-.mb {
-  margin-bottom: 7rem;
-}
-
-h2 {
-  font-weight: 700;
-}
-
 .upload-photo__photo {
   height: 15rem;
   width: 15rem;
   border-radius: 50%;
 }
+
 .upload-photo__figure {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
 .upload-photo__figure > *:not(:last-child) {
   margin-bottom: 2rem;
 }
+
+/*# sourceMappingURL=style.css.map */
