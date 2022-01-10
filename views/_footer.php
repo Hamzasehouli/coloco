@@ -3,27 +3,12 @@
         <section class="">
             <form class="newsletter">
 
+                <input style="width:40rem;margin-right:1.4rem" placeholder="Newsletter" type="email"
+                    class="form-control" />
 
-                <!--
-                <div class="col-auto">
-                    <p class="pt-2">
-                        <strong>Sign up for our newsletter</strong>
-                    </p>
-                </div> -->
-
-                <div class="col-md-5 col-12">
-
-                    <div style="margin-right:1rem">
-                        <input style="width:40rem;" placeholder="Newsletter" type="email" id="form5Example21"
-                            class="form-control" />
-                        <!-- <label class="form-label" for="form5Example21">Email address</label> -->
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-outline-light mb-4">
-                        Subscribe
-                    </button>
-                </div>
+                <button type="submit" class="btn btn-outline-light mb-4">
+                    Subscribe
+                </button>
 
             </form>
         </section>

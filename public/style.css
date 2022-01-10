@@ -12,12 +12,13 @@
 *,
 *::after,
 *::before {
+  padding: 0;
+  margin: 0;
   box-sizing: inherit;
 }
 
 body {
   box-sizing: border-box;
-  padding: 0;
 }
 
 input {
@@ -217,7 +218,7 @@ body {
 
 .newsletter {
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
 
 .form {
@@ -248,11 +249,10 @@ body {
 #header {
   width: 100%;
   background: var(--color-primary);
+  padding: 1.5rem 3rem;
 }
 
 .nav {
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,6 +276,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
 .form__hero {
