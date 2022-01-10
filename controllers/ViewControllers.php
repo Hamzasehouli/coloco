@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace coloco\controllers;
 
@@ -44,5 +44,9 @@ class ViewControllers
     public static function renderError()
     {
         include_once $_SERVER['DOCUMENT_ROOT'] . '/views/_error.php';
+    }
+    public static function createad()
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/views/_createad.php';
     }
 }

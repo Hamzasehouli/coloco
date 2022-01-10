@@ -24,7 +24,7 @@ if (isset($istokenValid)) {
 
     ?>
 
-            <button type="submit">Logout</button>
+            <button class="btn btn-primary logout" type="submit">Logout</button>
 
             <?php
 
