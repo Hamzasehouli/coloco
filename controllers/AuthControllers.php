@@ -61,9 +61,11 @@ class AuthControllers
         $jwt = $gt->generateToken($id);
         $_SESSION['token'] = $jwt;
         setcookie(name:'token', value:"$jwt", path:'/', httponly:false);
-        SendEmail::sendEmail(reciever:$email, subject:'welcome to Coloco family', body:"Welcome $firstname to coloco family, we are very happy to join us, if you have anay question, do not hesitate to ask us");
+        // SendEmail::sendEmail(reciever:$email, subject:'welcome to Coloco family', body:"Welcome $firstname to coloco family, we are very happy to join us, if you have anay question, do not hesitate to ask us");
         http_response_code(201);
         echo (json_encode(['status' => 'success', 'data' => ['user' => $user, 'token' => $jwt]]));
+        header('Location:/');
+        exit;
 
     }
 

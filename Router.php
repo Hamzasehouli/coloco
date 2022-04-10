@@ -9,11 +9,11 @@ class Router
     private $getRoutes;
     private $postRoutes;
 
-    public function get($url, $fn)
+    public function get($url, $fn):void
     {
         $this->getRoutes[$url] = $fn;
     }
-    public function post($url, $fn)
+    public function post($url, $fn):void
     {
         $this->postRoutes[$url] = $fn;
     }

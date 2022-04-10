@@ -1,39 +1,33 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace coloco\helpers;
 
 class GenerateJwt
 {
 
-    public function generateToken(string $id):string
+    public function generateToken(?int $id): string
     {
 
-        
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
 
-       
-        $payload = json_encode(['user_id' => $id, 'exp' => (time() + (120 * 60))]);
-
+        $payload = json_encode(['user_id' => (string) $id, 'exp' => (time() + (120 * 60))]);
 
         $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
 
-
         $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
-
 
         $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $_ENV['JWT_SECURE_KEY'], true);
 
-
         $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-
 
         $jwt = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
         return $jwt;
     }
 
-    public static function verifyToken($jwt){
+    public static function verifyToken($jwt)
+    {
         $tokenParts = explode('.', $jwt);
         $header = base64_decode($tokenParts[0]);
         $payload = base64_decode($tokenParts[1]);
@@ -65,7 +59,7 @@ class GenerateJwt
 
         // verify it matches the signature provided in the jwt
         $is_signature_valid = ($base64UrlSignature === $signature_provided);
-        return ['istokenValid'=>$is_signature_valid, 'userId'=>$id];
+        return ['istokenValid' => $is_signature_valid, 'userId' => $id];
 
     }
 };
