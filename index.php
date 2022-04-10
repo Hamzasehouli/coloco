@@ -4,6 +4,10 @@ declare (strict_types = 1);
 
 session_start();
 
+set_exception_handler(function (\Throwable$e) {
+    echo "Uncaught exception: " , $e->getMessage(), "\n";
+});
+
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
     header('content-type:application/json');
 }
