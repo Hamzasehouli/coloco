@@ -1,32 +1,27 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 session_start();
 
-
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/')) {
     header('content-type:application/json');
-};
+}
+;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-require_once './env.php';
+// require_once './env.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 use coloco\config\Database;
-use coloco\controllers\AdControllers;
-use coloco\controllers\AuthControllers;
-use coloco\controllers\UserControllers;
-use coloco\controllers\ViewControllers;
-use coloco\routes\AuthRoutes;
-use coloco\routes\UserRoutes;
-use coloco\routes\AdRoutes;
-use coloco\routes\ViewRoutes;
 use coloco\Router;
-
+use coloco\routes\AdRoutes;
+use coloco\routes\AuthRoutes;
+use coloco\routes\ViewRoutes;
 
 $con = Database::connect();
 $router = new Router();
-
 
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
     AuthRoutes::run($router);
@@ -43,9 +38,4 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
     exit;
 }
 
-
 ViewRoutes::run($router);
-
-
-
-
