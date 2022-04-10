@@ -8,14 +8,12 @@ use coloco\helpers\ErrorHandler;
 
 class Database
 {
-    private static $con;
 
-    public static function connect()
+    public static function connect(): \PDO
     {
         try {
 
-            $con = new \PDO('mysql:host=' . (string) $_ENV['HOST'] . ';port=' . (int) $_ENV['PORT'] . ';dbname=' . (string) $_ENV['DB_NAME'], (string) $_ENV['USERNAME'], (string) $_ENV['PASSWORD']);
-            // $con->setAttribute(\PDO::ERRMODE_EXCEPTION, \PDO::ATTR_ERRMODE);
+            $con = new \PDO('mysql:host=' . (string) $_ENV['HOST'] . ';port=' . (int) $_ENV['PORT'] . ';dbname=' . (string) $_ENV['DB_NAME'], (string) $_ENV['USERNAME'], (string) $_ENV['PASSWORD'], [\PDO::ATTR_EMULATE_PREPARES => false]);
             return $con;
         } catch (\PDOException$e) {
             ErrorHandler::run(statusCode:500, message:$e->getMessage());
