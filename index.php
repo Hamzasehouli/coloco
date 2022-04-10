@@ -17,13 +17,16 @@ use coloco\config\Database;
 use coloco\Router;
 use coloco\routes\AdRoutes;
 use coloco\routes\AuthRoutes;
+use coloco\routes\UserRoutes;
 use coloco\routes\ViewRoutes;
 
-$con = Database::connect();
+Database::connect();
 $router = new Router();
 
+ViewRoutes::run($router);
+
 if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/users')) {
-    AuthRoutes::run($router);
+    UserRoutes::run($router);
     exit;
 }
 
@@ -36,5 +39,3 @@ if (str_starts_with($_SERVER["REQUEST_URI"], '/api/v1/ads')) {
     AdRoutes::run($router);
     exit;
 }
-
-ViewRoutes::run($router);
